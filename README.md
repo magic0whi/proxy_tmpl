@@ -71,7 +71,7 @@ pushd /srv/sync_work/proxy_tmpl \
   && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < clash.yaml.tmpl > /srv/sync_work/clash/clash.yaml \
   && rm -r $TMP && unset TMP \
 && popd \
-&& pushd ~/sync_work/sing-box-subscribe \
+&& pushd /srv/sync_work/sing-box-subscribe \
   && python main.py --template_index 0 \
   && sudo cp config.json /run/agenix/sb_client.json \
 && popd \
