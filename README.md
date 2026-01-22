@@ -110,3 +110,10 @@ pushd ~/nixos_configs_flake/secrets \
 - [dev_flake](https://github.com/magic0whi/dev_flake)
 - [sing-box-subscribe](https://github.com/Toperlock/sing-box-subscribe)
 - [nix-darwin](https://github.com/nix-darwin/nix-darwin)
+
+## Acknowledgements
+
+I gratefully acknowledge chezmoi's powerful templating and field-level encryption capabilities, which make it possible to securely manage and publicize these configurations.
+
+- [KeePassXC](https://keepassxc.org/)
+- [chezmoi](https://www.chezmoi.io/)
