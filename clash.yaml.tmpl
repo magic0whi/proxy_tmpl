@@ -1,0 +1,592 @@
+_a0: &pxy_test {type: http, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300}, "header": {"User-Agent": "ClashMetaForAndroid/2.11.20.Meta"}}
+proxy-providers:
+  provider1:
+    <<: *pxy_test
+    url: "{{ keepassxcAttribute "sing-box" "providers_url1" }}&flag=clash"
+
+mixed-port: 2080
+allow-lan: false
+mode: rule
+log-level: info
+ipv6: true
+external-controller: 0.0.0.0:9091
+secret: ""
+external-ui: ui
+external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
+
+tun:
+  enable: true
+  stack: gvisor
+  auto-route: true
+  strict-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+  route-address:
+    - 172.19.0.0/30
+    - "fdfe:dcba:9877::1/126"
+  route-exclude-address:
+    - 10.0.0.0/8
+    - 100.64.0.0/10
+    - 169.254.0.0/16
+    - 192.168.0.0/16
+    - fe80::/10
+    - fd7a:115c:a1e0::/48
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.0/15
+  fake-ip-range6: fc00::/18
+  fake-ip-filter:
+    - '*' # single `*` only match hostnames
+    - '+.lan' # `+` match multiple levels at multi-level and include base, but only for prefix
+    - '+.local'
+    # Stun services
+    - 'stun.*.*'
+    - 'stun.*.*.*'
+    - 'stun.*.*.*.*'
+    - 'stun.*.*.*.*.*'
+
+  default-nameserver: # DNS used to resolve DNSs' domain
+    - tls://223.5.5.5
+    - system
+  nameserver:
+    - tls://223.5.5.5
+  hosts:
+    aria.proteus.eu.org:
+      - 100.89.228.70
+      - fd7a:115c:a1e0::2c01:e446
+  # Specific Domain/IP mappings (Matches "nameserver-policy")
+  nameserver-policy:
+    # AI
+    gspe1-ssl.ls.apple.com: tls://8.8.8.8#AI
+    rule-set:geosite-anthropic,geosite-apple-intelligence,geosite-bing,geosite-openai,geosite-perplexity,geosite-xai,geosite-google-gemini:
+      tls://8.8.8.8#AI
+    # Heating (Reject)
+    '+.2miners.com,+.donate.v2.xmrig,+.supportxmr.com': tls://8.8.8.8#REJECT
+    # Paypal
+    '+.marqeta.com': tls://8.8.8.8#Paypal
+    rule-set:geosite-paypal: tls://8.8.8.8#Paypal
+    # HSBC
+    '+.checkfreeweb.com': tls://8.8.8.8#HSBC
+    rule-set:geosite-hsbc: tls://8.8.8.8#HSBC
+    # OKX
+    '+.okcoin.com,+.okx.ac,+.okx.cab': tls://8.8.8.8#OKX
+    # Kraken
+    rule-set:geosite-kraken: tls://8.8.8.8#Kraken
+    # Trading212
+    'trading212equities.s3.*.amazonaws.com,+.trading212.com': tls://8.8.8.8#Trading212
+    # HongKong
+    # - DOMAIN-SU  '+.carousell.co,HongKong
+    '+.carousell.com.hk': tls://8.8.8.8#HongKong
+    rule-set:geosite-hketgroup,geosite-line: tls://8.8.8.8#HongKong
+    # UnitedStates
+    '+.wallet.coinbase.com,+.wallet.elephant-blue.org,+.t-mobile.com,+.connectbyt-mobile.com': tls://8.8.8.8#UnitedStates
+    rule-set:geosite-ibkr: tls://8.8.8.8#UnitedStates
+    # Germany
+    '+.bonify.de,+.coinbase.com,+.bybit.eu,+.braze.eu': tls://8.8.8.8#Germany
+    rule-set:geosite-bybit,geosite-n26: tls://8.8.8.8#Germany
+    # UnitedKingdom
+    'moneyboxassets.blob.core.windows.net,+.clearscore.com,+.creditkarma.co.uk,+.experian.co.uk,+.expcdn.co.uk,+.equifax.co.uk,+.equifax.com,+.chase.co.uk,+.chase.intl,+.nutmeg.com,+.monzo.com,+.monzo-alt.net,+.westernunion.com,+.yondercard.com,+.yonder.com,+.zopa.com,+.withplum.com,+.moneyboxapp.com,+.chiphq.net,+.curve.app,+.curve.com,+.curve.api.kustomerapp.com,+.imaginecurve.com,+.sumup.com,+.sumup.io,+.sumup.net,+.backpack.exchange,+.backpack.workers.dev,+.neverless.com,+.freetrade.io,+.freetrade.app,+.remitly.com,+.remitly.io,+.remitly-3pjs.com,+.remit.ly,+.skrill.com,+.lemfi.com,+.lemonade.finance,+.lemonadefi.app.link,+.taptapsend.com,+.klarna.com,+.klarnacdn.net,+.klarnaevt.com,+.truelayer.com,+.yapily.com,+.zimperium.com':
+      tls://8.8.8.8#UnitedKingdom
+    rule-set:geosite-wise,geosite-stripe,geosite-schwab: tls://8.8.8.8#UnitedKingdom
+    # Apple
+    rule-set:geosite-apple: tls://8.8.8.8#Apple
+    # Game Download CDN
+    rule-set:geosite-category-game-platforms-download: tls://8.8.8.8#Direct
+    # Game
+    rule-set:geosite-category-games: tls://8.8.8.8#Games
+    # Google
+    rule-set:geosite-google,geosite-youtube: tls://8.8.8.8#Google
+    # Meta
+    rule-set:geosite-meta: tls://8.8.8.8#Meta
+    # Microsoft
+    rule-set:geosite-microsoft: tls://8.8.8.8#Microsoft
+    # Oracle
+    rule-set:geosite-oracle: tls://8.8.8.8#Oracle
+    # Pixiv
+    rule-set:geosite-pixiv: tls://8.8.8.8#Pixiv
+    # China
+    '+.syncthing.net,+.octopuscards.com,+.octopus-cards.com,+.octopus.com.hk,+.airstarbank.com,+.antbank.hk,+.za.group,+.szgjgs.com':
+      tls://223.5.5.5#Direct
+    rule-set:geosite-bilibili,geosite-tailscale,geosite-boc,geosite-ccb,geosite-icbc,geosite-ifast,geosite-microsoft,geosite-alibaba@!cn,geosite-tencent,geosite-cn:
+      tls://223.5.5.5#Direct
+
+proxies:
+  - name: Direct
+    type: direct
+    udp: true
+  - name: Proteus-NixOS-1 # US-1
+    type: vless
+    server: {{ keepassxcAttribute "sing-box" "Proteus-NixOS-1" }}
+    port: 443
+    uuid: {{ keepassxcAttribute "sing-box" "vless_uuid" }}
+    network: tcp
+    tls: true
+    udp: true
+    flow: xtls-rprx-vision
+    servername: {{ keepassxcAttribute "sing-box" "reality_server_name" }}
+    reality-opts:
+      public-key: {{ keepassxcAttribute "sing-box" "reality_public_key" }}
+      short-id: {{ keepassxcAttribute "sing-box" "reality_short_id" }}
+    client-fingerprint: chrome
+  - name: Proteus-NixOS-2 # DE-1
+    type: vless
+    server: {{ keepassxcAttribute "sing-box" "Proteus-NixOS-2" }}
+    port: 443
+    uuid: {{ keepassxcAttribute "sing-box" "vless_uuid" }}
+    network: tcp
+    tls: true
+    udp: true
+    flow: xtls-rprx-vision
+    servername: {{ keepassxcAttribute "sing-box" "reality_server_name" }}
+    reality-opts:
+      public-key: {{ keepassxcAttribute "sing-box" "reality_public_key" }}
+      short-id: {{ keepassxcAttribute "sing-box" "reality_short_id" }}
+    client-fingerprint: chrome
+  - name: Proteus-NixOS-3 # GB-2
+    type: vless
+    server: {{ keepassxcAttribute "sing-box" "Proteus-NixOS-3" }}
+    port: 443
+    uuid: {{ keepassxcAttribute "sing-box" "vless_uuid" }}
+    network: tcp
+    tls: true
+    udp: true
+    flow: xtls-rprx-vision
+    servername: {{ keepassxcAttribute "sing-box" "reality_server_name" }}
+    reality-opts:
+      public-key: {{ keepassxcAttribute "sing-box" "reality_public_key" }}
+      short-id: {{ keepassxcAttribute "sing-box" "reality_short_id" }}
+    client-fingerprint: chrome
+  - name: Proteus-NixOS-4 # GB-2
+    type: vless
+    server: {{ keepassxcAttribute "sing-box" "Proteus-NixOS-4" }}
+    port: 443
+    uuid: {{ keepassxcAttribute "sing-box" "vless_uuid" }}
+    network: tcp
+    tls: true
+    udp: true
+    flow: xtls-rprx-vision
+    servername: {{ keepassxcAttribute "sing-box" "reality_server_name" }}
+    reality-opts:
+      public-key: {{ keepassxcAttribute "sing-box" "reality_public_key" }}
+      short-id: {{ keepassxcAttribute "sing-box" "reality_short_id" }}
+    client-fingerprint: chrome
+  - name: Proteus-NixOS-5 # HK-1
+    type: vless
+    server: {{ keepassxcAttribute "sing-box" "Proteus-NixOS-5" }}
+    port: 443
+    uuid: {{ keepassxcAttribute "sing-box" "vless_uuid" }}
+    network: tcp
+    tls: true
+    udp: true
+    flow: xtls-rprx-vision
+    servername: {{ keepassxcAttribute "sing-box" "reality_server_name" }}
+    reality-opts:
+      public-key: {{ keepassxcAttribute "sing-box" "reality_public_key" }}
+      short-id: {{ keepassxcAttribute "sing-box" "reality_short_id" }}
+    client-fingerprint: chrome
+  - name: Proteus-NixOS-6 # CN-1
+    type: ss
+    server: {{ keepassxcAttribute "sing-box" "Proteus-NixOS-6" }}
+    port: 3389
+    password: {{ keepassxcAttribute "sing-box" "ss_password" }}
+    cipher: 2022-blake3-aes-256-gcm
+    udp: true
+
+# Proxy Groups
+_a1: &cate_group {type: select, proxies: [Auto, Direct, HongKong, Taiwan, Singapore, Japan, UnitedStates, UnitedKingdom, Germany, Others]}
+proxy-groups:
+  - {name: Default, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Proxy.png"}
+  - {name: VoWiFi, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/WiFi.png"}
+  - {name: Heating, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Cryptocurrency.png"}
+  - {name: Paypal, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/PayPal.png"}
+  - {name: HSBC, <<: *cate_group}
+  - {name: OKX, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Cryptocurrency_1.png"}
+  - {name: Kraken, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Cryptocurrency_2.png"}
+  - {name: Trading212, <<: *cate_group}
+  - {name: AI, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/AI.png"}
+  - {name: Apple, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png"}
+  - {name: Meta, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Facebook.png"}
+  - {name: Games, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png"}
+  - {name: Google, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png"}
+  - {name: Microsoft, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png"}
+  - {name: Oracle, <<: *cate_group}
+  - {name: BiliBili, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/bilibili.png"}
+  - {name: Pixiv, <<: *cate_group}
+  # Note: `(?i)` turn on case-insensitive, `(?!)` not followed by
+  - {name: HongKong, type: select, include-all: true, filter: "(?i)(?!直连)(Proteus-NixOS-5|🇭🇰|港|hk|hongkong|hong kong)", icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png"}
+  - {name: Taiwan, type: select, include-all: true, filter: "(?i)(?!直连)(🇹🇼|台|tw|taiwan)", icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png"}
+  - {name: Singapore, type: select, include-all: true, filter: "(?i)(?!直连)(🇸🇬|新|sg|singapore)", icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png"}
+  - {name: Japan, type: select, include-all: true, filter: '(?i)(?!直连)(🇯🇵|日|jp|japan)', icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png"}
+  - {name: UnitedStates, type: select, include-all: true, filter: '(?i)^(?!Proteus-NixOS-(?!1(?!\d))|直连).*(🇺🇸|美|us|unitedstates|united states)', icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png"}
+  - {name: UnitedKingdom, type: select, include-all: true, filter: "(?i)(?!直连)(Proteus-NixOS-3|Proteus-NixOS-4|🇬🇧|英|uk|unitedkingdom|united kingdom)", icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_Kingdom.png"}
+  - {name: Germany, type: select, include-all: true, filter: "(?i)(?!直连)(Proteus-NixOS-2|🇩🇪|德|de|germany|deutschland)", icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Germany.png"}
+  # NOTE: `(?:)` non-capturing group (e.g. ex \1, \2, etc.), I don't know why use here
+  - {name: Others, type: select, include-all: true, filter: "(?i)^(?!.*(?:Proteus-NixOS-[1-5]|🇭🇰|港|hk|hongkong|hong kong|🇹🇼|台|tw|taiwan|🇸🇬|新|sg|singapore|🇯🇵|日|jp|japan|🇺🇸|美|\bus\b|unitedstates|united states|🇬🇧|英|uk|unitedkingdom|united kingdom|🇩🇪|德|de|germany|deutschland|直连)).*", icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png"}
+  - {name: Auto, type: url-test, url: "http://www.gstatic.com/generate_204", interval: 600, tolerance: 10, include-all: true, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Auto.png"}
+
+rules:
+  # Process Names
+  - PROCESS-NAME,aria2c,Direct
+  - PROCESS-NAME,i2pd,Direct
+  - PROCESS-NAME,monerod,Direct
+  - PROCESS-NAME,snowflake-pt-client,Direct
+  - PROCESS-NAME,snowflake-client.exe,Direct
+  - PROCESS-NAME,syncthing,Direct
+  - PROCESS-NAME,syncthing.exe,Direct
+  - PROCESS-NAME,tailscaled,Direct
+  - PROCESS-NAME,tailscaled.exe,Direct
+  - PROCESS-NAME,tor,Direct
+  - PROCESS-NAME,tor.exe,Direct
+  - PROCESS-NAME,WeChat,Direct
+
+  - PROCESS-PATH-REGEX,.*snowflake.*,Direct
+  - PROCESS-PATH-REGEX,.*tailscaled.*,Direct
+
+  - IP-CIDR,10.0.0.0/8,Direct,no-resolve
+  - IP-CIDR,169.254.0.0/16,Direct,no-resolve
+  - IP-CIDR,172.16.0.0/12,Direct,no-resolve
+  - IP-CIDR,172.19.0.0/30,Direct,no-resolve
+  - IP-CIDR,172.16.0.0/15,Direct,no-resolve
+  - IP-CIDR,172.18.0.0/16,Direct,no-resolve
+  - IP-CIDR,172.19.0.4/30,Direct,no-resolve
+  - IP-CIDR,172.19.0.8/29,Direct,no-resolve
+  - IP-CIDR,172.19.0.16/28,Direct,no-resolve
+  - IP-CIDR,172.19.0.32/27,Direct,no-resolve
+  - IP-CIDR,172.19.0.64/26,Direct,no-resolve
+  - IP-CIDR,172.19.0.128/25,Direct,no-resolve
+  - IP-CIDR,172.19.1.0/24,Direct,no-resolve
+  - IP-CIDR,172.19.2.0/23,Direct,no-resolve
+  - IP-CIDR,172.19.4.0/22,Direct,no-resolve
+  - IP-CIDR,172.19.8.0/21,Direct,no-resolve
+  - IP-CIDR,172.19.16.0/20,Direct,no-resolve
+  - IP-CIDR,172.19.32.0/19,Direct,no-resolve
+  - IP-CIDR,172.19.64.0/18,Direct,no-resolve
+  - IP-CIDR,172.19.128.0/17,Direct,no-resolve
+  - IP-CIDR,172.20.0.0/14,Direct,no-resolve
+  - IP-CIDR,172.24.0.0/13,Direct,no-resolve
+  - IP-CIDR,192.168.0.0/16,Direct,no-resolve
+  - IP-CIDR,fe80::/10,Direct,no-resolve
+
+  - DST-PORT,22,Direct # ssh
+
+  - OR,((OR,((AND,((DST-PORT,500,4500),(NETWORK,udp))),(AND,((DST-PORT,143),(NETWORK,tcp))))),(DOMAIN-SUFFIX,3gppnetwork.org)),VoWiFi
+
+  - RULE-SET,geosite-ads-all,REJECT
+
+  # Heating (Reject)
+  - DOMAIN-SUFFIX,2miners.com,REJECT
+  - DOMAIN-SUFFIX,donate.v2.xmrig,REJECT
+  - DOMAIN-SUFFIX,supportxmr.com,REJECT
+  - PROCESS-NAME,xmrig,REJECT
+  - PROCESS-NAME,xmrig.exe,REJECT
+
+  # Paypal
+  - DOMAIN-SUFFIX,marqeta.com,Paypal
+  - RULE-SET,geosite-paypal,Paypal
+
+  # HSBC
+  - DOMAIN-SUFFIX,checkfreeweb.com,HSBC
+  - RULE-SET,geosite-hsbc,HSBC
+
+  # OKX
+  - DOMAIN-SUFFIX,okcoin.com,OKX
+  - DOMAIN-SUFFIX,okx.ac,OKX
+  - DOMAIN-SUFFIX,okx.cab,OKX
+  - RULE-SET,geosite-okx,OKX
+
+  # Kraken
+  - RULE-SET,geosite-kraken,Kraken
+
+  # Trading212
+  - DOMAIN-REGEX,trading212equities\.s3\.\S+\.amazonaws\.com,Trading212
+  - DOMAIN-SUFFIX,trading212.com,Trading212
+
+  # AI
+  - DOMAIN,gspe1-ssl.ls.apple.com,AI
+  - RULE-SET,geosite-anthropic,AI
+  - RULE-SET,geosite-apple-intelligence,AI
+  - RULE-SET,geosite-bing,AI
+  - RULE-SET,geosite-github,AI
+  - RULE-SET,geosite-openai,AI
+  - RULE-SET,geosite-perplexity,AI
+  - RULE-SET,geosite-xai,AI
+  - RULE-SET,geosite-google-gemini,AI
+
+  # UnitedStates
+  - DOMAIN-SUFFIX,wallet.coinbase.com,UnitedStates
+  - DOMAIN-SUFFIX,wallet.elephant-blue.org,UnitedStates
+  - DOMAIN-SUFFIX,t-mobile.com,UnitedStates
+  - DOMAIN-SUFFIX,connectbyt-mobile.com,UnitedStates
+  - RULE-SET,geosite-ibkr,UnitedStates
+
+  # Germany
+  - DOMAIN-SUFFIX,bonify.de,Germany
+  - DOMAIN-SUFFIX,coinbase.com,Germany
+  - DOMAIN-SUFFIX,bybit.eu,Germany
+  - DOMAIN-SUFFIX,braze.eu,Germany
+  - RULE-SET,geosite-bybit,Germany
+  - RULE-SET,geosite-n26,Germany
+
+  - DOMAIN-SUFFIX,carousell.com.hk,HongKong
+  - RULE-SET,geosite-hketgroup,HongKong
+  - RULE-SET,geosite-line,HongKong
+
+  # UnitedKingdom
+  - DOMAIN,moneyboxassets.blob.core.windows.net,UnitedKingdom
+  - DOMAIN-SUFFIX,clearscore.com,UnitedKingdom
+  - DOMAIN-SUFFIX,creditkarma.co.uk,UnitedKingdom
+  - DOMAIN-SUFFIX,experian.co.uk,UnitedKingdom
+  - DOMAIN-SUFFIX,experianidentityservice.co.uk,UnitedKingdom
+  - DOMAIN-SUFFIX,expcdn.co.uk,UnitedKingdom
+  - DOMAIN-SUFFIX,equifax.co.uk,UnitedKingdom
+  - DOMAIN-SUFFIX,equifax.com,UnitedKingdom
+  - DOMAIN-SUFFIX,chase.co.uk,UnitedKingdom
+  - DOMAIN-SUFFIX,chase.intl,UnitedKingdom
+  - DOMAIN-SUFFIX,nutmeg.com,UnitedKingdom
+  - DOMAIN-SUFFIX,monzo.com,UnitedKingdom
+  - DOMAIN-SUFFIX,monzo-alt.net,UnitedKingdom
+  - DOMAIN-SUFFIX,westernunion.com,UnitedKingdom
+  - DOMAIN-SUFFIX,yondercard.com,UnitedKingdom
+  - DOMAIN-SUFFIX,yonder.com,UnitedKingdom
+  - DOMAIN-SUFFIX,zopa.com,UnitedKingdom
+  - DOMAIN-SUFFIX,withplum.com,UnitedKingdom
+  - DOMAIN-SUFFIX,moneyboxapp.com,UnitedKingdom
+  - DOMAIN-SUFFIX,chiphq.net,UnitedKingdom
+  - DOMAIN-SUFFIX,curve.app,UnitedKingdom
+  - DOMAIN-SUFFIX,curve.com,UnitedKingdom
+  - DOMAIN-SUFFIX,curve.api.kustomerapp.com,UnitedKingdom
+  - DOMAIN-SUFFIX,imaginecurve.com,UnitedKingdom
+  - DOMAIN-SUFFIX,sumup.com,UnitedKingdom
+  - DOMAIN-SUFFIX,sumup.io,UnitedKingdom
+  - DOMAIN-SUFFIX,sumup.net,UnitedKingdom
+  - DOMAIN-SUFFIX,backpack.exchange,UnitedKingdom
+  - DOMAIN-SUFFIX,backpack.workers.dev,UnitedKingdom
+  - DOMAIN-SUFFIX,neverless.com,UnitedKingdom
+  - DOMAIN-SUFFIX,freetrade.io,UnitedKingdom
+  - DOMAIN-SUFFIX,freetrade.app,UnitedKingdom
+  - DOMAIN-SUFFIX,remitly.com,UnitedKingdom
+  - DOMAIN-SUFFIX,remitly.io,UnitedKingdom
+  - DOMAIN-SUFFIX,remitly-3pjs.com,UnitedKingdom
+  - DOMAIN-SUFFIX,remit.ly,UnitedKingdom
+  - DOMAIN-SUFFIX,skrill.com,UnitedKingdom
+  - DOMAIN-SUFFIX,lemfi.com,UnitedKingdom
+  - DOMAIN-SUFFIX,lemonade.finance,UnitedKingdom
+  - DOMAIN-SUFFIX,lemonadefi.app.link,UnitedKingdom
+  - DOMAIN-SUFFIX,taptapsend.com,UnitedKingdom
+  - DOMAIN-SUFFIX,klarna.com,UnitedKingdom
+  - DOMAIN-SUFFIX,klarnacdn.net,UnitedKingdom
+  - DOMAIN-SUFFIX,klarnaevt.com,UnitedKingdom
+  - DOMAIN-SUFFIX,truelayer.com,UnitedKingdom
+  - DOMAIN-SUFFIX,yapily.com,UnitedKingdom
+  - DOMAIN-SUFFIX,zimperium.com,UnitedKingdom
+  - RULE-SET,geosite-wise,UnitedKingdom
+  - RULE-SET,geosite-stripe,UnitedKingdom
+  - RULE-SET,geosite-schwab,UnitedKingdom
+
+  # Apple
+  - RULE-SET,geoip-apple,Apple,no-resolve
+  - RULE-SET,geosite-apple,Apple
+
+  # Games Platform Download
+  - RULE-SET,geosite-category-game-platforms-download,Direct
+
+  # Games
+  - RULE-SET,geosite-category-games,Games
+
+  # Google
+  - RULE-SET,geoip-google,Google,no-resolve
+  - RULE-SET,geosite-google,Google
+  - RULE-SET,geosite-youtube,Google
+
+  # Meta
+  - RULE-SET,geoip-facebook,Meta,no-resolve
+  - RULE-SET,geosite-meta,Meta
+
+  # Microsoft
+  - RULE-SET,geosite-microsoft,Microsoft
+
+  # Oracle
+  - RULE-SET,geosite-oracle,Oracle
+
+  # BiliBili
+  - RULE-SET,geoip-bilibili,BiliBili,no-resolve
+  - RULE-SET,geosite-bilibili,BiliBili
+
+  # Pixiv
+  - RULE-SET,geosite-pixiv,Pixiv
+
+  - DOMAIN-SUFFIX,syncthing.net,Direct
+  - DOMAIN-SUFFIX,octopuscards.com,Direct
+  - DOMAIN-SUFFIX,octopus-cards.com,Direct
+  - DOMAIN-SUFFIX,octopus.com.hk,Direct
+  - DOMAIN-SUFFIX,airstarbank.com,Direct
+  - DOMAIN-SUFFIX,antbank.hk,Direct
+  - DOMAIN-SUFFIX,za.group,Direct
+  - DOMAIN-SUFFIX,szgjgs.com,Direct
+
+  - RULE-SET,geosite-tailscale,Direct
+  - RULE-SET,geosite-boc,Direct
+  - RULE-SET,geosite-ccb,Direct
+  - RULE-SET,geosite-icbc,Direct
+  - RULE-SET,geosite-ifast,Direct
+  - RULE-SET,geosite-alibaba@!cn,Direct
+  - RULE-SET,geosite-tencent,Direct
+  - RULE-SET,geoip-cn,Direct,no-resolve
+  - RULE-SET,geosite-cn,Direct
+
+  - MATCH,Default # Default Final Match
+
+_a2: &domain {type: http, format: mrs, interval: 86400, behavior: domain}
+_a3: &ip {type: http, format: mrs, interval: 86400, behavior: ipcidr}
+rule-providers:
+  geosite-ads-all:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs
+  geosite-tailscale:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tailscale.mrs
+  geosite-boc:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/boc.mrs
+  geosite-ccb:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ccb.mrs
+  geosite-hsbc:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/hsbc.mrs
+  geosite-icbc:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/icbc.mrs
+  geosite-ifast:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ifast.mrs
+  geosite-hketgroup:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/hketgroup.mrs
+  geosite-alibaba@!cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/alibaba@!cn.mrs
+  geoip-cn:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs
+  geosite-cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs
+  geosite-github:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs
+  geosite-paypal:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs
+  geoip-apple:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geoip/apple.mrs
+  geosite-apple:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs
+  geoip-facebook:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/facebook.mrs
+  geosite-meta:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/meta.mrs
+  geoip-bilibili:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geoip/bilibili.mrs
+  geosite-bilibili:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bilibili.mrs
+  geosite-bybit:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bybit.mrs
+  geosite-okx:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/okx.mrs
+  geosite-n26:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/n26.mrs
+  geosite-wise:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/wise.mrs
+  geosite-stripe:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/stripe.mrs
+  geosite-kraken:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/kraken.mrs
+  geosite-anthropic:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs
+  geosite-apple-intelligence:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-intelligence.mrs
+  geosite-bing:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bing.mrs
+  geosite-openai:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs
+  geosite-perplexity:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/perplexity.mrs
+  geosite-xai:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xai.mrs
+  geosite-google-gemini:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs
+  geosite-category-game-platforms-download:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-game-platforms-download.mrs
+  geosite-category-games:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games.mrs
+  geoip-google:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs
+  geosite-google:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs
+  geosite-youtube:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs
+  geosite-microsoft:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs
+  geosite-oracle:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/oracle.mrs
+  geosite-ibkr:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ibkr.mrs
+  geosite-schwab:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/schwab.mrs
+  geosite-line:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/line.mrs
+  geosite-pixiv:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/pixiv.mrs
+  geosite-tencent:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tencent.mrs

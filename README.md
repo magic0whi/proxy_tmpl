@@ -9,11 +9,12 @@ pushd ~/sync_work/proxy_tmpl \
   && export TMP=$(mktemp --directory) \
   && gpg --quiet --batch --yes --output $TMP/tmp.key --decrypt proxy_kdbx.key.asc \
   && sed -r "s,REPLACE,$TMP/tmp.key," chezmoi.toml > $TMP/chezmoi.toml \
-  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < providers.json.tmpl > ~/sync_work/sing-box-subscribe/providers.json \
-  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < config.json.tmpl > ~/sync_work/sing-box-subscribe/config_template/config.json \
+  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < providers.json.tmpl > ~/sync_work/sb2/providers.json \
+  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < config.json.tmpl > ~/sync_work/sb2/config_template/config.json \
+  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < clash.yaml.tmpl > ~/sync_work/clash/clash.yaml \
   && rm -r $TMP && unset TMP \
 && popd \
-&& pushd ~/sync_work/sing-box-subscribe \
+&& pushd ~/sync_work/sb2 \
   && python main.py --template_index 0 \
   && sudo cp config.json /run/agenix/sb_client.json \
 && popd \
