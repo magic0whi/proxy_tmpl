@@ -1,0 +1,1120 @@
+{
+  "log": {"level": "debug", "timestamp": false},
+  "experimental": {
+    "clash_api": {
+      "external_controller": "127.0.0.1:9091",
+      "external_ui": "ui",
+      "secret": "",
+      "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
+      "external_ui_download_detour": "Auto",
+      "default_mode": "rule"
+    },
+    "cache_file": {"enabled": true, "store_fakeip": true, "store_rdrc": true}
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "hosts",
+        "type": "hosts",
+        "predefined": {
+          "aria.proteus.eu.org": ["100.89.228.70", "fd7a:115c:a1e0::2c01:e446"]
+        }
+      },
+      {
+        "tag": "fakeip",
+        "type": "fakeip",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "fc00::/18"
+      },
+      {
+        "tag": "proxy", "type": "tls", "server": "8.8.8.8", "detour": "Default"
+      },
+      {
+        "tag": "de", "type": "tls", "server": "8.8.8.8", "detour": "Germany"
+      },
+      {
+        "tag": "hk", "type": "tls", "server": "8.8.8.8", "detour": "HongKong"
+      },
+      {
+        "tag": "gb", "type": "tls", "server": "8.8.8.8", "detour": "UnitedKingdom"
+      },
+      {
+        "tag": "us", "type": "tls", "server": "8.8.8.8", "detour": "UnitedStates"
+      },
+      {
+        "tag": "china", "type": "tls", "server": "223.5.5.5"
+      },
+      {
+        "tag": "paypal", "type": "tls", "server": "8.8.8.8", "detour": "PayPal"
+      },
+      {
+        "tag": "hsbc", "type": "tls", "server": "8.8.8.8", "detour": "HSBC"
+      },
+      {
+        "tag": "kraken", "type": "tls", "server": "8.8.8.8", "detour": "Kraken"
+      },
+      {
+        "tag": "okx", "type": "tls", "server": "8.8.8.8", "detour": "OKX"
+      },
+      {
+        "tag": "trading212", "type": "tls", "server": "8.8.8.8", "detour": "Trading212"
+      },
+      {
+        "tag": "ai", "type": "tls", "server": "8.8.8.8", "detour": "AI"
+      },
+      {
+        "tag": "apple", "type": "tls", "server": "8.8.8.8", "detour": "Apple"
+      },
+      {
+        "tag": "games", "type": "tls", "server": "8.8.8.8", "detour": "Games"
+      },
+      {
+        "tag": "google", "type": "tls", "server": "8.8.8.8", "detour": "Google"
+      },
+      {
+        "tag": "meta", "type": "tls", "server": "8.8.8.8", "detour": "Meta"
+      },
+      {
+        "tag": "microsoft", "type": "tls", "server": "8.8.8.8", "detour": "Microsoft"
+      },
+      {
+        "tag": "oracle", "type": "tls", "server": "8.8.8.8", "detour": "Oracle"
+      },
+      {
+        "tag": "pixiv", "type": "tls", "server": "8.8.8.8", "detour": "Pixiv"
+      }
+    ],
+    "rules": [
+      {"server": "hosts", "domain_suffix": "proteus.eu.org"},
+      {"server": "fakeip", "query_type": [ "A", "AAAA" ]},
+      {"server": "china", "clash_mode": "direct"},
+      {"server": "default", "clash_mode": "global"},
+      {
+        "action": "reject",
+        "domain_suffix": ["2miners.com", "donate.v2.xmrig", "supportxmr.com"]
+      },
+      {"action": "reject", "process_name": ["xmrig", "xmrig.exe"]},
+      {
+        "server": "paypal",
+        "domain_suffix": "marqeta.com",
+        "rule_set": "geosite-paypal"
+      },
+      {
+        "server": "hsbc",
+        "domain_suffix": "checkfreeweb.com",
+        "rule_set": "geosite-hsbc"
+      },
+      {"server": "kraken", "rule_set": "geosite-kraken"},
+      {
+        "server": "okx",
+        "domain_suffix": ["okcoin.com", "okx.ac", "okx.cab"],
+        "rule_set": "geosite-okx"
+      },
+      {
+        "server": "trading212",
+        "domain_regex": "trading212equities\\.s3\\.\\S+\\.amazonaws\\.com",
+        "domain_suffix": "trading212.com"
+      },
+      {
+        "server": "ai",
+        "domain": "gspe1-ssl.ls.apple.com",
+        "rule_set": [
+          "geosite-anthropic",
+          "geosite-apple-intelligence",
+          "geosite-bing",
+          "geosite-github",
+          "geosite-openai",
+          "geosite-perplexity",
+          "geosite-xai",
+          "geosite-google-gemini"
+        ]
+      },
+      {
+        "server": "us",
+        "domain_suffix": [
+          "wallet.coinbase.com", "wallet.elephant-blue.org",
+          "t-mobile.com", "connectbyt-mobile.com"
+        ],
+        "rule_set": "geosite-ibkr"
+      },
+      {
+        "server": "de",
+        "domain_suffix": ["bonify.de", "coinbase.com", "bybit.eu", "braze.eu"],
+        "rule_set": ["geosite-bybit", "geosite-n26"]
+      },
+      {
+        "server": "hk",
+        "domain_suffix": "carousell.com.hk",
+        "rule_set": ["geosite-hketgroup", "geosite-line"]
+      },
+      {
+        "server": "gb",
+        "domain": "moneyboxassets.blob.core.windows.net",
+        "domain_suffix": [
+          "clearscore.com",
+          "creditkarma.co.uk",
+          "experian.co.uk",
+          "experianidentityservice.co.uk",
+          "expcdn.co.uk",
+          "equifax.co.uk",
+          "equifax.com",
+          "chase.co.uk",
+          "chase.intl",
+          "nutmeg.com",
+          "monzo.com",
+          "monzo-alt.net",
+          "westernunion.com",
+          "yondercard.com",
+          "yonder.com",
+          "zopa.com",
+          "withplum.com",
+          "moneyboxapp.com",
+          "chiphq.net",
+          "curve.app",
+          "curve.com",
+          "curve.api.kustomerapp.com",
+          "imaginecurve.com",
+          "sumup.com",
+          "sumup.io",
+          "sumup.net",
+          "backpack.exchange",
+          "backpack.workers.dev",
+          "neverless.com",
+          "freetrade.io",
+          "freetrade.app",
+          "remitly.com",
+          "remitly.io",
+          "remitly-3pjs.com",
+          "remit.ly",
+          "skrill.com",
+          "lemfi.com",
+          "lemonade.finance",
+          "lemonadefi.app.link",
+          "taptapsend.com",
+          "klarna.com",
+          "klarnacdn.net",
+          "klarnaevt.com",
+          "truelayer.com",
+          "yapily.com",
+          "zimperium.com"
+        ],
+        "rule_set": ["geosite-wise", "geosite-stripe", "geosite-schwab"]
+      },
+      {"server": "apple", "rule_set": "geosite-apple"},
+      {"server": "china", "rule_set": "geosite-category-game-platforms-download"},
+      {"server": "games", "rule_set": "geosite-category-games"},
+      {"server": "google", "rule_set": ["geosite-google", "geosite-youtube"]},
+      {"server": "meta", "rule_set": "geosite-meta"},
+      {"server": "microsoft", "rule_set": "geosite-microsoft"},
+      {"server": "oracle", "rule_set": "geosite-oracle"},
+      {"server": "pixiv", "rule_set": "geosite-pixiv"},
+      {
+        "server": "china",
+        "domain_suffix": [
+          "syncthing.net",
+          "octopuscards.com",
+          "octopus-cards.com",
+          "octopus.com.hk",
+          "airstarbank.com",
+          "antbank.hk",
+          "za.group",
+          "szgjgs.com"
+        ],
+        "rule_set": [
+          "geosite-bilibili",
+          "geosite-tailscale",
+          "geosite-boc",
+          "geosite-ccb",
+          "geosite-icbc",
+          "geosite-ifast",
+          "geosite-apple",
+          "geosite-microsoft",
+          "geosite-alibaba@!cn",
+          "geosite-tencent",
+          "geosite-cn"
+        ]
+      }
+    ],
+    "final": "proxy"
+  },
+  "inbounds": [
+    {
+      "tag": "tun-in",
+      "type": "tun",
+      "address": ["172.19.0.0/30", "fdfe:dcba:9876::0/126"],
+      "route_exclude_address": [
+        "100.64.0.0/10",
+        "172.17.0.0/12",
+        "fd66:06e5:aebe::/48",
+        "fd7a:115c:a1e0::/48",
+        "10.0.0.0/8",
+        "169.254.0.0/16",
+        "192.168.0.0/16",
+        "fe80::/10"
+      ],
+      "stack": "gvisor",
+      "auto_route": true,
+      "auto_redirect": false,
+      "strict_route": true,
+      "exclude_interface": ["docker0"],
+      "platform": {
+        "http_proxy": {
+          "enabled": false, "server": "127.0.0.1", "server_port": 2080
+        }
+      }
+    },
+    {"tag": "mixed-in", "type": "mixed", "listen": "127.0.0.1", "listen_port": 2080}
+  ],
+  "outbounds": [
+    {"tag": "Direct", "type": "direct"},
+    {
+      "tag": "Socks5",
+      "type": "socks",
+      "version": "5",
+      "server": "127.0.0.1",
+      "server_port": 1080,
+      "username": "1111111111",
+      "password": "2222222222",
+      "udp_over_tcp": false,
+      "detour": "Auto"
+    },
+    {
+      "tag": "Proteus-NixOS-1",
+      "type": "vless",
+      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-1" }}",
+      "server_port": 443,
+      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "reality": {
+          "enabled": true,
+          "public_key": "{{ keepassxcAttribute "sing-box" "reality_public_key" }}",
+          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
+        },
+        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
+        "utls": {"enabled": true, "fingerprint": "chrome"}
+      },
+      "multiplex": {
+        "enabled": false,
+        "padding": true,
+        "protocol": "h2mux",
+        "max_streams": 32,
+        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
+      }
+    },
+    {
+      "tag": "Proteus-NixOS-2",
+      "type": "vless",
+      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-2" }}",
+      "server_port": 443,
+      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "reality": {
+          "enabled": true,
+          "public_key": "{{ keepassxcAttribute "sing-box" "reality_public_key" }}",
+          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
+        },
+        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
+        "utls": {"enabled": true, "fingerprint": "chrome"}
+      },
+      "multiplex": {
+        "enabled": false,
+        "padding": true,
+        "protocol": "h2mux",
+        "max_streams": 32,
+        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
+      }
+    },
+    {
+      "tag": "Proteus-NixOS-3",
+      "type": "vless",
+      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-3" }}",
+      "server_port": 443,
+      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "reality": {
+          "enabled": true,
+          "public_key": "{{ keepassxcAttribute "sing-box" "reality_public_key" }}",
+          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
+        },
+        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
+        "utls": {"enabled": true, "fingerprint": "chrome"}
+      },
+      "multiplex": {
+        "enabled": false,
+        "padding": true,
+        "protocol": "h2mux",
+        "max_streams": 32,
+        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
+      }
+    },
+    {
+      "tag": "Proteus-NixOS-4",
+      "type": "vless",
+      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-4" }}",
+      "server_port": 443,
+      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "reality": {
+          "enabled": true,
+          "public_key": "{{ keepassxcAttribute "sing-box" "reality_public_key" }}",
+          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
+        },
+        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
+        "utls": {"enabled": true, "fingerprint": "chrome"}
+      },
+      "multiplex": {
+        "enabled": false,
+        "padding": true,
+        "protocol": "h2mux",
+        "max_streams": 32,
+        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
+      }
+    },
+    {
+      "tag": "Proteus-NixOS-5",
+      "type": "vless",
+      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-5" }}",
+      "server_port": 443,
+      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "reality": {
+          "enabled": true,
+          "public_key": "{{ keepassxcAttribute "sing-box" "reality_public_key" }}",
+          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
+        },
+        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
+        "utls": {"enabled": true, "fingerprint": "chrome"}
+      },
+      "multiplex": {
+        "enabled": false,
+        "padding": true,
+        "protocol": "h2mux",
+        "max_streams": 32,
+        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
+      }
+    },
+    {
+      "tag": "Proteus-NixOS-6",
+      "type": "shadowsocks",
+      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-6" }}",
+      "server_port": 3389,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "{{ keepassxcAttribute "sing-box" "ss_password" }}",
+      "multiplex": {"enabled": true}
+    },
+    {
+      "tag": "Default",
+      "type": "selector",
+      "outbounds": [
+        "Auto",
+        "Direct",
+        "Socks5",
+        "Proteus-NixOS-1",
+        "Proteus-NixOS-2",
+        "Proteus-NixOS-3",
+        "Proteus-NixOS-4",
+        "Proteus-NixOS-5",
+        "Proteus-NixOS-6",
+        "{all}"
+      ],
+      "default": "Auto"
+    },
+    {
+      "tag": "VoWiFi",
+      "type": "selector",
+      "outbounds": ["Direct", "Default"],
+      "default": "Default"
+    },
+    {
+      "tag": "PayPal",
+      "type": "selector",
+      "outbounds": ["Germany", "UnitedKingdom", "UnitedStates"],
+      "default": "UnitedKingdom"
+    },
+    {
+      "tag": "HSBC",
+      "type": "selector",
+      "outbounds": ["Direct", "HongKong"]
+    },
+    {
+      "tag": "Kraken",
+      "type": "selector",
+      "outbounds": ["Germany", "UnitedKingdom"],
+      "default": "UnitedKingdom"
+    },
+    {
+      "tag": "OKX",
+      "type": "selector",
+      "outbounds": ["Direct", "Germany"]
+    },
+    {
+      "tag": "Trading212",
+      "type": "selector",
+      "outbounds": ["Germany", "UnitedKingdom"],
+      "default": "UnitedKingdom"
+    },
+    {
+      "tag": "AI",
+      "type": "selector",
+      "outbounds": ["Default", "Germany", "UnitedKingdom", "UnitedStates"],
+      "default": "UnitedStates"
+    },
+    {
+      "tag": "Apple",
+      "type": "selector",
+      "outbounds": ["Direct", "Default", "Germany", "UnitedKingdom", "UnitedStates"]
+    },
+    {
+      "tag": "Meta",
+      "type": "selector",
+      "outbounds": ["Default", "Germany", "UnitedKingdom", "UnitedStates"],
+      "default": "UnitedKingdom"
+    },
+    {
+      "tag": "Games",
+      "type": "selector",
+      "outbounds": ["Direct", "Default", "Germany", "UnitedKingdom", "UnitedStates", "Others"]
+    },
+    {
+      "tag": "Google",
+      "type": "selector",
+      "outbounds": ["Default", "Germany", "UnitedKingdom", "UnitedStates"]
+    },
+    {
+      "tag": "Microsoft",
+      "type": "selector",
+      "outbounds": ["Direct", "Germany", "UnitedKingdom", "UnitedStates"]
+    },
+    {
+      "tag": "Oracle",
+      "type": "selector",
+      "outbounds": ["Direct", "Default", "Germany", "UnitedKingdom", "UnitedStates"],
+      "default": "UnitedKingdom"
+    },
+    {
+      "tag": "BiliBili",
+      "type": "selector",
+      "outbounds": ["Direct", "Proteus-NixOS-6", "HongKong", "Taiwan"]
+    },
+    {
+      "tag": "Pixiv",
+      "type": "selector",
+      "outbounds": ["Direct", "Japan", "HongKong", "Taiwan"]
+    },
+    {
+      "tag": "HongKong",
+      "type": "selector",
+      "outbounds": ["Proteus-NixOS-5", "{all}"],
+      "filter": [
+        {"action": "include", "keywords": ["🇭🇰|HK|hk|香港|港|HongKong"]}
+      ]
+    },
+    {
+      "tag": "Taiwan",
+      "type": "selector",
+      "outbounds": ["{all}"],
+      "filter": [
+        {"action": "include", "keywords": ["🇹🇼|TW|tw|台湾|臺灣|台|Taiwan"]}
+      ]
+    },
+    {
+      "tag": "Singapore",
+      "type": "selector",
+      "outbounds": ["{all}"],
+      "filter": [
+        {"action": "include", "keywords": ["🇸🇬|SG|sg|新加坡|狮|Singapore"]}
+      ]
+    },
+    {
+      "tag": "Japan",
+      "type": "selector",
+      "outbounds": ["{all}"],
+      "filter": [
+        {"action": "include", "keywords": ["🇯🇵|JP|jp|日本|Japan"]}
+      ]
+    },
+    {
+      "tag": "UnitedStates",
+      "type": "selector",
+      "outbounds": ["Proteus-NixOS-1", "{all}"],
+      "filter": [
+        {"action": "include", "keywords": ["🇺🇸|US|us|美国|美|United States"]}
+      ]
+    },
+    {
+      "tag": "UnitedKingdom",
+      "type": "selector",
+      "outbounds": ["Proteus-NixOS-3", "Proteus-NixOS-4", "{all}"],
+      "filter": [
+        {"action": "include", "keywords": ["🇬🇧|UK|uk|英国|英|United Kingdom"]}
+      ]
+    },
+    {
+      "tag": "Germany",
+      "type": "selector",
+      "outbounds": ["Proteus-NixOS-2", "{all}"],
+      "filter": [
+        {"action": "include", "keywords": ["🇩🇪|GE|ge|DE|de|德国|德|Germany|Deutschland"]}
+      ]
+    },
+    {
+      "tag": "Others",
+      "type": "selector",
+      "outbounds": ["{all}"],
+      "filter": [
+        {
+          "action": "exclude",
+          "keywords": [
+            "🇭🇰|HK|hk|香港|港|HongKong|🇹🇼|TW|tw|台湾|臺灣|台|Taiwan|🇸🇬|SG|sg|新加坡|狮|Singapore|🇯🇵|JP|jp|日本|Japan|🇺🇸|US|us|美国|美|United States|🇬🇧|UK|uk|英国|英|United Kingdom|🇩🇪|GE|ge|DE|de|德国|德|Germany|Deutschland"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "Auto",
+      "type": "urltest",
+      "outbounds": ["{all}"],
+      "filter": [
+        {"action": "exclude", "keywords": ["网站|地址|剩余|过期|时间|有效|过滤"]}
+      ],
+      "url": "http://www.gstatic.com/generate_204",
+      "interval": "10m",
+      "tolerance": 50
+    }
+  ],
+  "route": {
+    "auto_detect_interface": true,
+    "default_domain_resolver": "china",
+    "final": "Default",
+    "rules": [
+      {
+        "outbound": "Direct",
+        "process_name": [
+          "aria2c",
+          "i2pd",
+          "monerod",
+          "snowflake-pt-client", "snowflake-client.exe",
+          "syncthing", "syncthing.exe",
+          "tor", "tor.exe",
+          "WeChat"
+        ]
+      },
+      {
+        "outbound": "Direct",
+        "process_path_regex": [".*snowflake.*", ".*tailscaled.*"]
+      },
+      {"outbound": "Direct", "port": 22},
+      {"action": "sniff", "inbound": ["tun-in", "mixed-in"]},
+      {"action": "hijack-dns", "type": "logical", "mode": "or",
+        "rules": [{"port": 53}, {"protocol": "dns"}]
+      },
+      {"action": "reject", "clash_mode": "rule", "rule_set": "geosite-category-ads-all"},
+      {"outbound": "Default", "clash_mode": "global"},
+      {"outbound": "Direct", "clash_mode": "direct"},
+      {
+        "outbound": "Direct",
+        "ip_cidr": [
+          "10.0.0.0/8",
+          "169.254.0.0/16",
+          "172.16.0.0/15",
+          "172.18.0.0/16",
+          "172.19.0.4/30",
+          "172.19.0.8/29",
+          "172.19.0.16/28",
+          "172.19.0.32/27",
+          "172.19.0.64/26",
+          "172.19.0.128/25",
+          "172.19.1.0/24",
+          "172.19.2.0/23",
+          "172.19.4.0/22",
+          "172.19.8.0/21",
+          "172.19.16.0/20",
+          "172.19.32.0/19",
+          "172.19.64.0/18",
+          "172.19.128.0/17",
+          "172.20.0.0/14",
+          "172.24.0.0/13",
+          "192.168.0.0/16",
+          "fe80::/10"
+        ]
+      },
+      {"outbound": "Default", "domain_suffix": "wenziwanka.com"},
+      {"outbound": "VoWiFi", "type": "logical", "mode": "or",
+        "rules": [
+          {"port": [500, 4500], "network": "udp"},
+          {"port": 143, "network": "tcp"},
+          {"domain_suffix": "3gppnetwork.org"}
+        ]
+      },
+      {
+        "action": "reject",
+        "domain_suffix": ["2miners.com", "donate.v2.xmrig", "supportxmr.com"]
+      },
+      {"action": "reject", "process_name": ["xmrig", "xmrig.exe"]},
+      {
+        "outbound": "PayPal",
+        "domain_suffix": "marqeta.com",
+        "rule_set": "geosite-paypal"
+      },
+      {
+        "outbound": "HSBC",
+        "domain_suffix": "checkfreeweb.com",
+        "rule_set": "geosite-hsbc"
+      },
+      {"outbound": "Kraken", "rule_set": "geosite-kraken"},
+      {
+        "outbound": "OKX",
+        "domain_suffix": ["okcoin.com", "okx.ac", "okx.cab"],
+        "rule_set": "geosite-okx"
+      },
+      {
+        "outbound": "Trading212",
+        "domain_regex": "trading212equities\\.s3\\.\\S+\\.amazonaws\\.com",
+        "domain_suffix": "trading212.com"
+      },
+      {
+        "outbound": "AI",
+        "domain": "gspe1-ssl.ls.apple.com",
+        "rule_set": [
+          "geosite-anthropic",
+          "geosite-apple-intelligence",
+          "geosite-bing",
+          "geosite-github",
+          "geosite-openai",
+          "geosite-perplexity",
+          "geosite-xai",
+          "geosite-google-gemini"
+        ]
+      },
+      {
+        "outbound": "UnitedStates",
+        "domain_suffix": [
+          "wallet.coinbase.com", "wallet.elephant-blue.org",
+          "t-mobile.com", "connectbyt-mobile.com"
+        ],
+        "rule_set": "geosite-ibkr"
+      },
+      {
+        "outbound": "Germany",
+        "domain_suffix": ["bonify.de", "coinbase.com", "bybit.eu", "braze.eu"],
+        "rule_set": ["geosite-bybit", "geosite-n26"]
+      },
+      {
+        "outbound": "HongKong",
+        "domain_suffix": "carousell.com.hk",
+        "rule_set": ["geosite-hketgroup", "geosite-line"]
+      },
+      {
+        "outbound": "UnitedKingdom",
+        "domain": "moneyboxassets.blob.core.windows.net",
+        "domain_suffix": [
+          "clearscore.com",
+          "creditkarma.co.uk",
+          "experian.co.uk",
+          "experianidentityservice.co.uk",
+          "expcdn.co.uk",
+          "equifax.co.uk",
+          "equifax.com",
+          "chase.co.uk",
+          "chase.intl",
+          "nutmeg.com",
+          "monzo.com",
+          "monzo-alt.net",
+          "westernunion.com",
+          "yondercard.com",
+          "yonder.com",
+          "zopa.com",
+          "withplum.com",
+          "moneyboxapp.com",
+          "chiphq.net",
+          "curve.app",
+          "curve.com",
+          "curve.api.kustomerapp.com",
+          "imaginecurve.com",
+          "sumup.com",
+          "sumup.io",
+          "sumup.net",
+          "backpack.exchange",
+          "backpack.workers.dev",
+          "neverless.com",
+          "freetrade.io",
+          "freetrade.app",
+          "remitly.com",
+          "remitly.io",
+          "remitly-3pjs.com",
+          "remit.ly",
+          "skrill.com",
+          "lemfi.com",
+          "lemonade.finance",
+          "lemonadefi.app.link",
+          "taptapsend.com",
+          "klarna.com",
+          "klarnacdn.net",
+          "klarnaevt.com",
+          "truelayer.com",
+          "yapily.com",
+          "zimperium.com"
+        ],
+        "rule_set": ["geosite-wise", "geosite-stripe", "geosite-schwab"]
+      },
+      {"outbound": "Apple", "rule_set": ["geoip-apple", "geosite-apple"]},
+      {"outbound": "Direct", "rule_set": "geosite-category-game-platforms-download"},
+      {"outbound": "Games", "rule_set": "geosite-category-games"},
+      {"outbound": "Google", "rule_set": ["geoip-google", "geosite-google", "geosite-youtube"]},
+      {"outbound": "Meta", "rule_set": ["geoip-facebook", "geosite-meta"]},
+      {"outbound": "Microsoft", "rule_set": "geosite-microsoft"},
+      {"outbound": "Oracle", "rule_set": "geosite-oracle"},
+      {"outbound": "BiliBili", "rule_set": ["geoip-bilibili", "geosite-bilibili"]},
+      {"outbound": "Pixiv", "rule_set": "geosite-pixiv"},
+      {
+        "outbound": "Direct",
+        "domain_suffix": [
+          "syncthing.net",
+          "octopuscards.com",
+          "octopus-cards.com",
+          "octopus.com.hk",
+          "airstarbank.com",
+          "antbank.hk",
+          "za.group",
+          "szgjgs.com"
+        ],
+        "rule_set": [
+          "geosite-tailscale",
+          "geosite-boc",
+          "geosite-ccb",
+          "geosite-icbc",
+          "geosite-ifast",
+          "geosite-alibaba@!cn",
+          "geosite-tencent",
+          "geoip-cn",
+          "geosite-cn"
+        ]
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "geosite-category-ads-all",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ads-all.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-github",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/github.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-apple-intelligence",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/apple-intelligence.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-bing",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/bing.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-openai",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/openai.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-anthropic",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/anthropic.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-perplexity",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/perplexity.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-xai",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/xai.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-google-gemini",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/google-gemini.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geoip-apple",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo-lite/geoip/apple.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-apple",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/apple.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geoip-google",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/google.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-google",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/google.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-youtube",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/youtube.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geoip-facebook",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/facebook.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-meta",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/meta.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geoip-bilibili",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo-lite/geoip/bilibili.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-bilibili",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/bilibili.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-microsoft",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/microsoft.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-category-games",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-games.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-category-game-platforms-download",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-game-platforms-download.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-tailscale",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/tailscale.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-bybit",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/bybit.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-okx",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/okx.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-n26",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/n26.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-kraken",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/kraken.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-paypal",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/paypal.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-wise",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/wise.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-stripe",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/stripe.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cn.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/cn.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-boc",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/boc.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-ccb",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/ccb.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-hsbc",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/hsbc.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-icbc",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/icbc.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-ifast",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/ifast.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-alibaba@!cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/alibaba@!cn.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-line",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/line.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-hketgroup",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/hketgroup.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-oracle",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/oracle.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-ibkr",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/ibkr.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-schwab",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/schwab.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-pixiv",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/pixiv.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-tencent",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/tencent.srs",
+        "download_detour": "Auto"
+      }
+    ]
+  }
+}

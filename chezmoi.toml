@@ -1,0 +1,4 @@
+[keepassxc]
+database = "./proxy.kdbx"
+args = ["--no-password", "--key-file=REPLACE"]
+prompt = false
