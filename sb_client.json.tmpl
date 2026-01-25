@@ -26,63 +26,26 @@
         "inet4_range": "198.18.0.0/15",
         "inet6_range": "fc00::/18"
       },
-      {
-        "tag": "proxy", "type": "tls", "server": "8.8.8.8", "detour": "Default"
-      },
-      {
-        "tag": "de", "type": "tls", "server": "8.8.8.8", "detour": "Germany"
-      },
-      {
-        "tag": "hk", "type": "tls", "server": "8.8.8.8", "detour": "HongKong"
-      },
-      {
-        "tag": "gb", "type": "tls", "server": "8.8.8.8", "detour": "UnitedKingdom"
-      },
-      {
-        "tag": "us", "type": "tls", "server": "8.8.8.8", "detour": "UnitedStates"
-      },
-      {
-        "tag": "china", "type": "tls", "server": "223.5.5.5"
-      },
-      {
-        "tag": "paypal", "type": "tls", "server": "8.8.8.8", "detour": "PayPal"
-      },
-      {
-        "tag": "hsbc", "type": "tls", "server": "8.8.8.8", "detour": "HSBC"
-      },
-      {
-        "tag": "kraken", "type": "tls", "server": "8.8.8.8", "detour": "Kraken"
-      },
-      {
-        "tag": "okx", "type": "tls", "server": "8.8.8.8", "detour": "OKX"
-      },
-      {
-        "tag": "trading212", "type": "tls", "server": "8.8.8.8", "detour": "Trading212"
-      },
-      {
-        "tag": "ai", "type": "tls", "server": "8.8.8.8", "detour": "AI"
-      },
-      {
-        "tag": "apple", "type": "tls", "server": "8.8.8.8", "detour": "Apple"
-      },
-      {
-        "tag": "games", "type": "tls", "server": "8.8.8.8", "detour": "Games"
-      },
-      {
-        "tag": "google", "type": "tls", "server": "8.8.8.8", "detour": "Google"
-      },
-      {
-        "tag": "meta", "type": "tls", "server": "8.8.8.8", "detour": "Meta"
-      },
-      {
-        "tag": "microsoft", "type": "tls", "server": "8.8.8.8", "detour": "Microsoft"
-      },
-      {
-        "tag": "oracle", "type": "tls", "server": "8.8.8.8", "detour": "Oracle"
-      },
-      {
-        "tag": "pixiv", "type": "tls", "server": "8.8.8.8", "detour": "Pixiv"
-      }
+      {"tag": "proxy", "type": "tls", "server": "8.8.8.8", "detour": "Default"},
+      {"tag": "de", "type": "tls", "server": "8.8.8.8", "detour": "Germany"},
+      {"tag": "hk", "type": "tls", "server": "8.8.8.8", "detour": "HongKong"},
+      {"tag": "gb", "type": "tls", "server": "8.8.8.8", "detour": "UnitedKingdom"},
+      {"tag": "us", "type": "tls", "server": "8.8.8.8", "detour": "UnitedStates"},
+      {"tag": "china", "type": "tls", "server": "223.5.5.5"},
+      {"tag": "paypal", "type": "tls", "server": "8.8.8.8", "detour": "PayPal"},
+      {"tag": "hsbc", "type": "tls", "server": "8.8.8.8", "detour": "HSBC"},
+      {"tag": "kraken", "type": "tls", "server": "8.8.8.8", "detour": "Kraken"},
+      {"tag": "okx", "type": "tls", "server": "8.8.8.8", "detour": "OKX"},
+      {"tag": "trading212", "type": "tls", "server": "8.8.8.8", "detour": "Trading212"},
+      {"tag": "ai", "type": "tls", "server": "8.8.8.8", "detour": "AI"},
+      {"tag": "apple", "type": "tls", "server": "8.8.8.8", "detour": "Apple"},
+      {"tag": "games", "type": "tls", "server": "8.8.8.8", "detour": "Games"},
+      {"tag": "google", "type": "tls", "server": "8.8.8.8", "detour": "Google"},
+      {"tag": "meta", "type": "tls", "server": "8.8.8.8", "detour": "Meta"},
+      {"tag": "microsoft", "type": "tls", "server": "8.8.8.8", "detour": "Microsoft"},
+      {"tag": "oracle", "type": "tls", "server": "8.8.8.8", "detour": "Oracle"},
+      {"tag": "pixiv", "type": "tls", "server": "8.8.8.8", "detour": "Pixiv"},
+      {"tag": "category-speedtest", "type": "tls", "server": "223.5.5.5", "detour": "Category-Speedtest"}
     ],
     "rules": [
       {"server": "hosts", "domain_suffix": "proteus.eu.org"},
@@ -208,6 +171,7 @@
       {"server": "microsoft", "rule_set": "geosite-microsoft"},
       {"server": "oracle", "rule_set": "geosite-oracle"},
       {"server": "pixiv", "rule_set": "geosite-pixiv"},
+      {"server": "category-speedtest", "rule_set": "geosite-category-speedtest"},
       {
         "server": "china",
         "domain_suffix": [
@@ -515,6 +479,11 @@
       "outbounds": ["Direct", "Japan", "HongKong", "Taiwan"]
     },
     {
+      "tag": "Category-Speedtest",
+      "type": "selector",
+      "outbounds": ["Direct", "Default"]
+    },
+    {
       "tag": "HongKong",
       "type": "selector",
       "outbounds": ["Proteus-NixOS-5", "{all}"],
@@ -787,6 +756,7 @@
       {"outbound": "Oracle", "rule_set": "geosite-oracle"},
       {"outbound": "BiliBili", "rule_set": ["geoip-bilibili", "geosite-bilibili"]},
       {"outbound": "Pixiv", "rule_set": "geosite-pixiv"},
+      {"outbound": "Category-Speedtest", "rule_set": "geosite-category-speedtest"},
       {
         "outbound": "Direct",
         "domain_suffix": [
@@ -1119,6 +1089,13 @@
         "type": "remote",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/tencent.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geosite-category-speedtest",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-speedtest.srs",
         "download_detour": "Auto"
       }
     ]

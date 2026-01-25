@@ -1,0 +1,40 @@
+{
+  "log": {"level": "info", "timestamp": false},
+  "dns": {"servers": [{"tag": "proxy", "type": "tls", "server": "8.8.8.8"}]},
+  "inbounds": [
+    {
+      "type": "vless",
+      "listen": "::",
+      "listen_port": 443,
+      "users": [
+        {"name": "proteus", "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}", "flow": "xtls-rprx-vision"}
+      ],
+      "tls": {
+        "enabled": true,
+        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
+        "reality": {
+          "enabled": true,
+          "handshake": {"server": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}", "server_port": 443},
+          "private_key": "{{ keepassxcAttribute "sing-box" "reality_private_key" }}",
+          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
+        }
+      },
+      "multiplex": {"enabled": true, "padding": true, "brutal": {"enabled": false, "up_mbps": 1000, "down_mbps": 1000}}
+    }
+  ],
+  "outbounds": [{"tag": "Direct", "type": "direct"}],
+  "route": {
+    "rules": [
+      {
+        "action": "hijack-dns",
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {"port": 53},
+          {"protocol": "dns"}
+        ]
+      },
+      {"action": "reject", "ip_cidr": ["::/0"]}
+    ]
+  }
+}

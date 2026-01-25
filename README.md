@@ -105,6 +105,35 @@ pushd ~/nixos_configs_flake/secrets \
 && sudo systemctl restart sing-box.service
 ```
 
+## NixOS Server
+
+Run `deploy` on a Linux shell since it doesn't build non-darwin binaries on MacOS
+
+```bash
+pushd /srv/sync_work/proxy_tmpl \
+  && export TMP=$(mktemp --directory) \
+  && gpg --quiet --batch --yes --output $TMP/tmp.key --decrypt proxy_kdbx.key.asc \
+  && sed -r "s,REPLACE,$TMP/tmp.key," chezmoi.toml > $TMP/chezmoi.toml \
+  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < sb_Proteus-NixOS-1.json.tmpl > $TMP/sb_Proteus-NixOS-1.json \
+&& popd
+&& pushd ~/nixos_configs_flake/secrets \
+  && (rm sb_Proteus-NixOS-1.json.age || true) \
+  && cat $TMP/sb_Proteus-NixOS-1.json \
+    | agenix -e sb_Proteus-NixOS-1.json.age -i <(pgp2ssh \
+      <<< <(gpg -ao - --export-secret-subkeys 30973F79B17F9ED3\!) \
+      <<< 1 2>&1 | awk 'BEGIN { A=0; S=0; } \
+        /BEGIN OPENSSH PRIVATE KEY/ { A=1; } \
+        { if (A==1) { print; } }' \
+    ) \
+  && rm -r $TMP && unset TMP \
+  && deploy -s --targets \
+    /home/proteus/nixos_configs_flake#Proteus-NUC \
+    /home/proteus/nixos_configs_flake#Proteus-Desktop \
+    /home/proteus/nixos_configs_flake#Proteus-NixOS-{1..6} \
+  -- --show-trace --verbose \
+&& popd
+```
+
 ## References
 
 - [dev_flake](https://github.com/magic0whi/dev_flake)

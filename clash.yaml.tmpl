@@ -123,6 +123,8 @@ dns:
     rule-set:geosite-oracle: tls://8.8.8.8#Oracle
     # Pixiv
     rule-set:geosite-pixiv: tls://8.8.8.8#Pixiv
+    # Category-Speedtest
+    rule-set:geosite-category-speedtest: tls://8.8.8.8#Category-Speedtest
     # China
     '+.syncthing.net,+.octopuscards.com,+.octopus-cards.com,+.octopus.com.hk,+.airstarbank.com,+.antbank.hk,+.za.group,+.szgjgs.com':
       tls://223.5.5.5#Direct
@@ -231,6 +233,7 @@ proxy-groups:
   - {name: Oracle, <<: *cate_group}
   - {name: BiliBili, <<: *cate_group, icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/bilibili.png"}
   - {name: Pixiv, <<: *cate_group}
+  - {name: Category-Speedtest, <<: *cate_group}
   # Note: `(?i)` turn on case-insensitive, `(?!)` not followed by
   - {name: HongKong, type: select, include-all: true, filter: "(?i)(?!直连)(Proteus-NixOS-5|🇭🇰|港|hk|hongkong|hong kong)", icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png"}
   - {name: Taiwan, type: select, include-all: true, filter: "(?i)(?!直连)(🇹🇼|台|tw|taiwan)", icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png"}
@@ -434,6 +437,9 @@ rules:
   # Pixiv
   - RULE-SET,geosite-pixiv,Pixiv
 
+  # Category-Speedtest
+  - RULE-SET,geosite-category-speedtest,Category-Speedtest
+
   - DOMAIN-SUFFIX,syncthing.net,Direct
   - DOMAIN-SUFFIX,octopuscards.com,Direct
   - DOMAIN-SUFFIX,octopus-cards.com,Direct
@@ -590,3 +596,6 @@ rule-providers:
   geosite-tencent:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tencent.mrs
+  geosite-category-speedtest:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-speedtest.mrs
