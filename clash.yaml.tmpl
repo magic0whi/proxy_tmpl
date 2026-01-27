@@ -126,7 +126,7 @@ dns:
     # Category-Speedtest
     rule-set:geosite-category-speedtest: tls://8.8.8.8#Category-Speedtest
     # China
-    '+.syncthing.net,+.octopuscards.com,+.octopus-cards.com,+.octopus.com.hk,+.airstarbank.com,+.antbank.hk,+.za.group,+.szgjgs.com':
+    '+.syncthing.net,+.octopuscards.com,+.octopus-cards.com,+.octopus.com.hk,+.airstarbank.com,+.antbank.hk,+.asia.ccb.com,+.welab.bank,+.za.group,+.szgjgs.com':
       tls://223.5.5.5#Direct
     rule-set:geosite-bilibili,geosite-tailscale,geosite-boc,geosite-ccb,geosite-icbc,geosite-ifast,geosite-alibaba@!cn,geosite-tencent,geosite-cn:
       tls://223.5.5.5#Direct
@@ -340,6 +340,10 @@ rules:
   - DOMAIN-SUFFIX,t-mobile.com,UnitedStates
   - DOMAIN-SUFFIX,connectbyt-mobile.com,UnitedStates
   - RULE-SET,geosite-ibkr,UnitedStates
+  - RULE-SET,geoip-ibkr-as9096,UnitedStates,no-resolve
+  - RULE-SET,geoip-ibkr-as9468,UnitedStates,no-resolve
+  - RULE-SET,geoip-ibkr-as27163,UnitedStates,no-resolve
+  - RULE-SET,geoip-ibkr-as40711,UnitedStates,no-resolve
 
   # Germany
   - DOMAIN-SUFFIX,bonify.de,Germany
@@ -450,6 +454,8 @@ rules:
   - DOMAIN-SUFFIX,octopus.com.hk,Direct
   - DOMAIN-SUFFIX,airstarbank.com,Direct
   - DOMAIN-SUFFIX,antbank.hk,Direct
+  - DOMAIN-SUFFIX,asia.ccb.com,Direct
+  - DOMAIN-SUFFIX,welab.bank,Direct
   - DOMAIN-SUFFIX,za.group,Direct
   - DOMAIN-SUFFIX,szgjgs.com,Direct
 
@@ -588,6 +594,18 @@ rule-providers:
   geosite-ibkr:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ibkr.mrs
+  geoip-ibkr-as9096:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/asn/AS9096.mrs
+  geoip-ibkr-as9468:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/asn/AS9468.mrs
+  geoip-ibkr-as27163:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/asn/AS27163.mrs
+  geoip-ibkr-as40711:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/asn/AS40711.mrs
   geosite-schwab:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/schwab.mrs

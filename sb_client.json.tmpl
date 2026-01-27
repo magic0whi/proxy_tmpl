@@ -185,6 +185,8 @@
           "octopus.com.hk",
           "airstarbank.com",
           "antbank.hk",
+          "asia.ccb.com",
+          "welab.bank",
           "za.group",
           "szgjgs.com"
         ],
@@ -686,7 +688,11 @@
           "wallet.coinbase.com", "wallet.elephant-blue.org",
           "t-mobile.com", "connectbyt-mobile.com"
         ],
-        "rule_set": "geosite-ibkr"
+        "rule_set": [
+          "geosite-ibkr",
+          "geoip-ibkr-as9096", "geoip-ibkr-as9468", "geoip-ibkr-as27163",
+          "geoip-ibkr-as40711"
+        ]
       },
       {
         "outbound": "Germany",
@@ -774,6 +780,8 @@
           "octopus.com.hk",
           "airstarbank.com",
           "antbank.hk",
+          "asia.ccb.com",
+          "welab.bank",
           "za.group",
           "szgjgs.com"
         ],
@@ -1076,6 +1084,34 @@
         "type": "remote",
         "format": "binary",
         "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/ibkr.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geoip-ibkr-as9096",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/asn/AS9096.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geoip-ibkr-as9468",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/asn/AS9468.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geoip-ibkr-as27163",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/asn/AS27163.srs",
+        "download_detour": "Auto"
+      },
+      {
+        "tag": "geoip-ibkr-as40711",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/asn/AS40711.srs",
         "download_detour": "Auto"
       },
       {
