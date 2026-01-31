@@ -212,8 +212,6 @@
       "address": ["172.19.0.0/30", "fdfe:dcba:9876::0/126"],
       "route_exclude_address": [
         "100.64.0.0/10",
-        "172.17.0.0/12",
-        "fd66:06e5:aebe::/48",
         "fd7a:115c:a1e0::/48",
         "10.0.0.0/8",
         "169.254.0.0/16",
@@ -224,12 +222,7 @@
       "auto_route": true,
       "auto_redirect": false,
       "strict_route": true,
-      "exclude_interface": ["docker0"],
-      "platform": {
-        "http_proxy": {
-          "enabled": false, "server": "127.0.0.1", "server_port": 2080
-        }
-      }
+      "platform": {"http_proxy": {"enabled": false, "server": "127.0.0.1", "server_port": 2080}}
     },
     {"tag": "mixed-in", "type": "mixed", "listen": "127.0.0.1", "listen_port": 2080}
   ],
