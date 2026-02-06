@@ -13,9 +13,9 @@ pushd ~/sync_work/proxy_tmpl \
   && export TMP=$(mktemp --directory) \
   && gpg --quiet --batch --yes --output $TMP/tmp.key --decrypt proxy_kdbx.key.asc \
   && sed -r "s,REPLACE,$TMP/tmp.key," chezmoi.toml > $TMP/chezmoi.toml \
-  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < providers.json.tmpl > ~/sync_work/sing-box-subscribe/providers.json \
-  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < sb_client.json.tmpl > ~/sync_work/sing-box-subscribe/config_template/1sb_client.json \
-  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < clash.yaml.tmpl > ~/sync_work/clash/clash.yaml \
+  && chezmoi -c $TMP/chezmoi.toml execute-template < providers.json.tmpl > ~/sync_work/sing-box-subscribe/providers.json \
+  && chezmoi -c $TMP/chezmoi.toml execute-template < sb_client.json.tmpl > ~/sync_work/sing-box-subscribe/config_template/1sb_client.json \
+  && chezmoi -c $TMP/chezmoi.toml execute-template < clash.yaml.tmpl > ~/sync_work/clash/clash.yaml \
   && rm -r $TMP && unset TMP \
 && popd \
 && pushd ~/sync_work/sing-box-subscribe \
@@ -66,9 +66,9 @@ pushd /srv/sync_work/proxy_tmpl \
   && export TMP=$(mktemp --directory) \
   && gpg --quiet --batch --yes --output $TMP/tmp.key --decrypt proxy_kdbx.key.asc \
   && sed -r "s,REPLACE,$TMP/tmp.key," chezmoi.toml > $TMP/chezmoi.toml \
-  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < providers.json.tmpl > /srv/sync_work/sing-box-subscribe/providers.json \
-  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < sb_client.json.tmpl > /srv/sync_work/sing-box-subscribe/config_template/1sb_client.json \
-  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < clash.yaml.tmpl > /srv/sync_work/clash/clash.yaml \
+  && chezmoi -c $TMP/chezmoi.toml execute-template < providers.json.tmpl > /srv/sync_work/sing-box-subscribe/providers.json \
+  && chezmoi -c $TMP/chezmoi.toml execute-template < sb_client.json.tmpl > /srv/sync_work/sing-box-subscribe/config_template/1sb_client.json \
+  && chezmoi -c $TMP/chezmoi.toml execute-template < clash.yaml.tmpl > /srv/sync_work/clash/clash.yaml \
   && rm -r $TMP && unset TMP \
 && popd \
 && pushd /srv/sync_work/sing-box-subscribe \
@@ -114,7 +114,7 @@ pushd /srv/sync_work/proxy_tmpl \
   && export TMP=$(mktemp --directory) \
   && gpg --quiet --batch --yes --output $TMP/tmp.key --decrypt proxy_kdbx.key.asc \
   && sed -r "s,REPLACE,$TMP/tmp.key," chezmoi.toml > $TMP/chezmoi.toml \
-  && nix run --offline nixpkgs#chezmoi -- -c $TMP/chezmoi.toml execute-template < sb_Proteus-NixOS-1.json.tmpl > $TMP/sb_Proteus-NixOS-1.json \
+  && chezmoi -c $TMP/chezmoi.toml execute-template < sb_Proteus-NixOS-1.json.tmpl > $TMP/sb_Proteus-NixOS-1.json \
 && popd
 && pushd ~/nixos_configs_flake/secrets \
   && (rm sb_Proteus-NixOS-1.json.age || true) \

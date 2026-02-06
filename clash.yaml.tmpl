@@ -81,6 +81,8 @@ dns:
       tls://8.8.8.8#AI
     # Heating (Reject)
     '+.2miners.com,+.donate.v2.xmrig,+.supportxmr.com': tls://8.8.8.8#REJECT
+    # VoWiFi
+    '+.3gppnetwork.org,+.jibecloud.net,+.ee.co.uk': tls://8.8.8.8#VoWiFi
     # Paypal
     '+.marqeta.com': tls://8.8.8.8#Paypal
     rule-set:geosite-paypal: tls://8.8.8.8#Paypal
@@ -291,7 +293,19 @@ rules:
 
   - DST-PORT,22,Direct # ssh
 
-  - OR,((OR,((AND,((DST-PORT,500,4500),(NETWORK,udp))),(AND,((DST-PORT,143),(NETWORK,tcp))))),(DOMAIN-SUFFIX,3gppnetwork.org)),VoWiFi
+  - OR,(
+      (AND,(
+        (DST-PORT,500,4500),
+        (NETWORK,udp)
+      )),
+      (AND,(
+        (DST-PORT,143),
+        (NETWORK,tcp)
+      ))
+    ),VoWiFi
+  - DOMAIN-SUFFIX,3gppnetwork.org,VoWiFi
+  - DOMAIN-SUFFIX,jibecloud.net,VoWiFi
+  - DOMAIN-SUFFIX,ee.co.uk,VoWiFi
 
   - RULE-SET,geosite-ads-all,REJECT
 

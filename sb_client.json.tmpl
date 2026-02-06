@@ -32,6 +32,7 @@
       {"tag": "gb", "type": "tls", "server": "8.8.8.8", "detour": "UnitedKingdom"},
       {"tag": "us", "type": "tls", "server": "8.8.8.8", "detour": "UnitedStates"},
       {"tag": "china", "type": "tls", "server": "223.5.5.5"},
+      {"tag": "vowifi", "type": "tls", "server": "8.8.8.8", "detour": "VoWiFi"},
       {"tag": "paypal", "type": "tls", "server": "8.8.8.8", "detour": "PayPal"},
       {"tag": "hsbc", "type": "tls", "server": "8.8.8.8", "detour": "HSBC"},
       {"tag": "kraken", "type": "tls", "server": "8.8.8.8", "detour": "Kraken"},
@@ -49,7 +50,7 @@
     ],
     "rules": [
       {"server": "hosts", "domain_suffix": "proteus.eu.org"},
-      {"server": "fakeip", "query_type": [ "A", "AAAA" ]},
+      {"server": "fakeip", "query_type": ["A", "AAAA"]},
       {"server": "china", "clash_mode": "direct"},
       {"server": "default", "clash_mode": "global"},
       {
@@ -57,22 +58,11 @@
         "domain_suffix": ["2miners.com", "donate.v2.xmrig", "supportxmr.com"]
       },
       {"action": "reject", "process_name": ["xmrig", "xmrig.exe"]},
-      {
-        "server": "paypal",
-        "domain_suffix": "marqeta.com",
-        "rule_set": "geosite-paypal"
-      },
-      {
-        "server": "hsbc",
-        "domain_suffix": "checkfreeweb.com",
-        "rule_set": "geosite-hsbc"
-      },
+      {"server": "vowifi", "domain_suffix": ["3gppnetwork.org", "jibecloud.net", "ee.co.uk"]},
+      {"server": "paypal", "domain_suffix": "marqeta.com", "rule_set": "geosite-paypal"},
+      {"server": "hsbc", "domain_suffix": "checkfreeweb.com", "rule_set": "geosite-hsbc"},
       {"server": "kraken", "rule_set": "geosite-kraken"},
-      {
-        "server": "okx",
-        "domain_suffix": ["okcoin.com", "okx.ac", "okx.cab"],
-        "rule_set": "geosite-okx"
-      },
+      {"server": "okx", "domain_suffix": ["okcoin.com", "okx.ac", "okx.cab"], "rule_set": "geosite-okx"},
       {
         "server": "trading212",
         "domain_regex": "trading212equities\\.s3\\.\\S+\\.amazonaws\\.com",
@@ -105,62 +95,36 @@
         "domain_suffix": ["bonify.de", "coinbase.com", "bybit.eu", "braze.eu"],
         "rule_set": ["geosite-bybit", "geosite-n26"]
       },
-      {
-        "server": "hk",
-        "domain_suffix": "carousell.com.hk",
-        "rule_set": ["geosite-hketgroup", "geosite-line"]
-      },
+      {"server": "hk", "domain_suffix": "carousell.com.hk", "rule_set": ["geosite-hketgroup", "geosite-line"]},
       {
         "server": "gb",
         "domain": "moneyboxassets.blob.core.windows.net",
         "domain_suffix": [
           "clearscore.com",
           "creditkarma.co.uk",
-          "experian.co.uk",
-          "experianidentityservice.co.uk",
-          "expcdn.co.uk",
-          "equifax.co.uk",
-          "equifax.com",
-          "chase.co.uk",
-          "chase.intl",
-          "nutmeg.com",
-          "monzo.com",
-          "monzo-alt.net",
+          "experian.co.uk", "experianidentityservice.co.uk", "expcdn.co.uk",
+          "equifax.co.uk", "equifax.com",
+          "chase.co.uk", "chase.intl", "nutmeg.com",
+          "monzo.com", "monzo-alt.net",
           "nationwide.co.uk",
           "tsb.co.uk",
           "jaja.co.uk",
-          "yondercard.com",
-          "yonder.com",
+          "yondercard.com", "yonder.com",
           "zable.co.uk",
           "zopa.com",
           "withplum.com",
           "moneyboxapp.com",
           "chiphq.net",
-          "curve.app",
-          "curve.com",
-          "curve.api.kustomerapp.com",
-          "imaginecurve.com",
-          "sumup.com",
-          "sumup.io",
-          "sumup.net",
-          "backpack.exchange",
-          "backpack.workers.dev",
+          "curve.app", "curve.com", "curve.api.kustomerapp.com", "imaginecurve.com",
+          "sumup.com", "sumup.io", "sumup.net",
+          "backpack.exchange", "backpack.workers.dev",
           "neverless.com",
-          "freetrade.io",
-          "freetrade.app",
-          "remitly.com",
-          "remitly.io",
-          "remitly-3pjs.com",
-          "remit.ly",
-          "skrill.com",
-          "lemfi.com",
-          "lemonade.finance",
-          "lemonadefi.app.link",
+          "freetrade.io", "freetrade.app",
+          "remitly.com", "remitly.io", "remitly-3pjs.com", "remit.ly", "skrill.com",
+          "lemfi.com", "lemonade.finance", "lemonadefi.app.link",
           "taptapsend.com",
           "westernunion.com",
-          "klarna.com",
-          "klarnacdn.net",
-          "klarnaevt.com",
+          "klarna.com", "klarnacdn.net", "klarnaevt.com",
           "truelayer.com",
           "yapily.com",
           "zimperium.com"
@@ -180,9 +144,7 @@
         "server": "china",
         "domain_suffix": [
           "syncthing.net",
-          "octopuscards.com",
-          "octopus-cards.com",
-          "octopus.com.hk",
+          "octopuscards.com", "octopus-cards.com", "octopus.com.hk",
           "airstarbank.com",
           "antbank.hk",
           "asia.ccb.com",
@@ -588,15 +550,10 @@
           "WeChat"
         ]
       },
-      {
-        "outbound": "Direct",
-        "process_path_regex": [".*snowflake.*", ".*tailscaled.*"]
-      },
+      {"outbound": "Direct", "process_path_regex": [".*snowflake.*", ".*tailscaled.*"]},
       {"outbound": "Direct", "port": 22},
       {"action": "sniff", "inbound": ["tun-in", "mixed-in"]},
-      {"action": "hijack-dns", "type": "logical", "mode": "or",
-        "rules": [{"port": 53}, {"protocol": "dns"}]
-      },
+      {"action": "hijack-dns", "type": "logical", "mode": "or", "rules": [{"port": 53}, {"protocol": "dns"}]},
       {"action": "reject", "clash_mode": "rule", "rule_set": "geosite-category-ads-all"},
       {"outbound": "Default", "clash_mode": "global"},
       {"outbound": "Direct", "clash_mode": "direct"},
@@ -628,11 +585,14 @@
         ]
       },
       {"outbound": "Default", "domain_suffix": "wenziwanka.com"},
-      {"outbound": "VoWiFi", "type": "logical", "mode": "or",
+      {
+        "outbound": "VoWiFi",
+        "type": "logical",
+        "mode": "or",
         "rules": [
           {"port": [500, 4500], "network": "udp"},
           {"port": 143, "network": "tcp"},
-          {"domain_suffix": "3gppnetwork.org"}
+          {"domain_suffix": ["3gppnetwork.org", "jibecloud.net", "ee.co.uk"]}
         ]
       },
       {
@@ -640,22 +600,10 @@
         "domain_suffix": ["2miners.com", "donate.v2.xmrig", "supportxmr.com"]
       },
       {"action": "reject", "process_name": ["xmrig", "xmrig.exe"]},
-      {
-        "outbound": "PayPal",
-        "domain_suffix": "marqeta.com",
-        "rule_set": "geosite-paypal"
-      },
-      {
-        "outbound": "HSBC",
-        "domain_suffix": "checkfreeweb.com",
-        "rule_set": "geosite-hsbc"
-      },
+      {"outbound": "PayPal", "domain_suffix": "marqeta.com", "rule_set": "geosite-paypal"},
+      {"outbound": "HSBC", "domain_suffix": "checkfreeweb.com", "rule_set": "geosite-hsbc"},
       {"outbound": "Kraken", "rule_set": "geosite-kraken"},
-      {
-        "outbound": "OKX",
-        "domain_suffix": ["okcoin.com", "okx.ac", "okx.cab"],
-        "rule_set": "geosite-okx"
-      },
+      {"outbound": "OKX", "domain_suffix": ["okcoin.com", "okx.ac", "okx.cab"], "rule_set": "geosite-okx"},
       {
         "outbound": "Trading212",
         "domain_regex": "trading212equities\\.s3\\.\\S+\\.amazonaws\\.com",
@@ -683,8 +631,7 @@
         ],
         "rule_set": [
           "geosite-ibkr",
-          "geoip-ibkr-as9096", "geoip-ibkr-as9468", "geoip-ibkr-as27163",
-          "geoip-ibkr-as40711"
+          "geoip-ibkr-as9096", "geoip-ibkr-as9468", "geoip-ibkr-as27163", "geoip-ibkr-as40711"
         ]
       },
       {
@@ -692,27 +639,17 @@
         "domain_suffix": ["bonify.de", "coinbase.com", "bybit.eu", "braze.eu"],
         "rule_set": ["geosite-bybit", "geosite-n26"]
       },
-      {
-        "outbound": "HongKong",
-        "domain_suffix": "carousell.com.hk",
-        "rule_set": ["geosite-hketgroup", "geosite-line"]
-      },
+      {"outbound": "HongKong", "domain_suffix": "carousell.com.hk", "rule_set": ["geosite-hketgroup", "geosite-line"]},
       {
         "outbound": "UnitedKingdom",
         "domain": "moneyboxassets.blob.core.windows.net",
         "domain_suffix": [
           "clearscore.com",
           "creditkarma.co.uk",
-          "experian.co.uk",
-          "experianidentityservice.co.uk",
-          "expcdn.co.uk",
-          "equifax.co.uk",
-          "equifax.com",
-          "chase.co.uk",
-          "chase.intl",
-          "nutmeg.com",
-          "monzo.com",
-          "monzo-alt.net",
+          "experian.co.uk", "experianidentityservice.co.uk", "expcdn.co.uk",
+          "equifax.co.uk", "equifax.com",
+          "chase.co.uk", "chase.intl", "nutmeg.com",
+          "monzo.com", "monzo-alt.net",
           "nationwide.co.uk",
           "tsb.co.uk",
           "jaja.co.uk",
@@ -723,31 +660,17 @@
           "withplum.com",
           "moneyboxapp.com",
           "chiphq.net",
-          "curve.app",
-          "curve.com",
-          "curve.api.kustomerapp.com",
-          "imaginecurve.com",
-          "sumup.com",
-          "sumup.io",
-          "sumup.net",
-          "backpack.exchange",
-          "backpack.workers.dev",
+          "curve.app", "curve.com", "curve.api.kustomerapp.com", "imaginecurve.com",
+          "sumup.com", "sumup.io", "sumup.net",
+          "backpack.exchange", "backpack.workers.dev",
           "neverless.com",
-          "freetrade.io",
-          "freetrade.app",
-          "remitly.com",
-          "remitly.io",
-          "remitly-3pjs.com",
-          "remit.ly",
+          "freetrade.io", "freetrade.app",
+          "remitly.com", "remitly.io", "remitly-3pjs.com", "remit.ly",
           "skrill.com",
-          "lemfi.com",
-          "lemonade.finance",
-          "lemonadefi.app.link",
+          "lemfi.com", "lemonade.finance", "lemonadefi.app.link",
           "taptapsend.com",
           "westernunion.com",
-          "klarna.com",
-          "klarnacdn.net",
-          "klarnaevt.com",
+          "klarna.com", "klarnacdn.net", "klarnaevt.com",
           "truelayer.com",
           "yapily.com",
           "zimperium.com"
@@ -768,9 +691,7 @@
         "outbound": "Direct",
         "domain_suffix": [
           "syncthing.net",
-          "octopuscards.com",
-          "octopus-cards.com",
-          "octopus.com.hk",
+          "octopuscards.com", "octopus-cards.com", "octopus.com.hk",
           "airstarbank.com",
           "antbank.hk",
           "asia.ccb.com",
