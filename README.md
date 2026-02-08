@@ -115,7 +115,7 @@ pushd /srv/sync_work/proxy_tmpl \
   && gpg --quiet --batch --yes --output $TMP/tmp.key --decrypt proxy_kdbx.key.asc \
   && sed -r "s,REPLACE,$TMP/tmp.key," chezmoi.toml > $TMP/chezmoi.toml \
   && chezmoi -c $TMP/chezmoi.toml execute-template < sb_Proteus-NixOS-1.json.tmpl > $TMP/sb_Proteus-NixOS-1.json \
-&& popd
+&& popd \
 && pushd ~/nixos_configs_flake/secrets \
   && (rm sb_Proteus-NixOS-1.json.age || true) \
   && cat $TMP/sb_Proteus-NixOS-1.json \

@@ -50,7 +50,7 @@
     ],
     "rules": [
       {"server": "hosts", "domain_suffix": "proteus.eu.org"},
-      {"server": "fakeip", "query_type": ["A", "AAAA"]},
+      {"server": "fakeip", "strategy": "ipv4_only", "query_type": ["A", "AAAA"]},
       {"server": "china", "clash_mode": "direct"},
       {"server": "default", "clash_mode": "global"},
       {
