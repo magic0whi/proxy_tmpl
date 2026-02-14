@@ -40,6 +40,7 @@
       {"tag": "trading212", "type": "tls", "server": "8.8.8.8", "detour": "Trading212"},
       {"tag": "sumup", "type": "tls", "server": "8.8.8.8", "detour": "SumUp"},
       {"tag": "curvepay", "type": "tls", "server": "8.8.8.8", "detour": "CurvePay"},
+      {"tag": "klarna", "type": "tls", "server": "8.8.8.8", "detour": "Klarna"},
       {"tag": "ai", "type": "tls", "server": "8.8.8.8", "detour": "AI"},
       {"tag": "apple", "type": "tls", "server": "8.8.8.8", "detour": "Apple"},
       {"tag": "games", "type": "tls", "server": "8.8.8.8", "detour": "Games"},
@@ -72,6 +73,7 @@
       },
       {"server": "sumup", "domain_suffix": ["sumup.com", "sumup.io", "sumup.net"]},
       {"server": "curvepay", "domain_suffix": ["curve.app", "curve.com", "curve.api.kustomerapp.com", "imaginecurve.com"]},
+      {"server": "klarna", "domain_suffix": ["klarna.com", "klarnacdn.net", "klarnaevt.com"]},
       {
         "server": "ai",
         "domain": "gspe1-ssl.ls.apple.com",
@@ -126,7 +128,6 @@
           "lemfi.com", "lemonade.finance", "lemonadefi.app.link",
           "taptapsend.com",
           "westernunion.com",
-          "klarna.com", "klarnacdn.net", "klarnaevt.com",
           "truelayer.com",
           "yapily.com",
           "zimperium.com"
@@ -372,6 +373,7 @@
     {"tag": "Trading212", "type": "selector", "outbounds": ["Germany", "UnitedKingdom"], "default": "UnitedKingdom"},
     {"tag": "SumUp", "type": "selector", "outbounds": ["Germany", "UnitedKingdom"], "default": "UnitedKingdom"},
     {"tag": "CurvePay", "type": "selector", "outbounds": ["Germany", "UnitedKingdom"], "default": "UnitedKingdom"},
+    {"tag": "Klarna", "type": "selector", "outbounds": ["Germany", "UnitedKingdom"], "default": "UnitedKingdom"},
     {
       "tag": "AI",
       "type": "selector",
@@ -394,8 +396,8 @@
       "type": "selector",
       "outbounds": ["Direct", "Default", "Germany", "UnitedKingdom", "UnitedStates", "Others"]
     },
-    {"tag": "Google", "type": "selector", "outbounds": ["Default", "Germany", "UnitedKingdom", "UnitedStates"]},
-    {"tag": "Microsoft", "type": "selector", "outbounds": ["Direct", "Germany", "UnitedKingdom", "UnitedStates"]},
+    {"tag": "Google", "type": "selector", "outbounds": ["Default", "Germany", "HongKong", "UnitedKingdom", "UnitedStates"]},
+    {"tag": "Microsoft", "type": "selector", "outbounds": ["Direct", "Germany", "HongKong", "UnitedKingdom", "UnitedStates"]},
     {
       "tag": "Oracle",
       "type": "selector",
@@ -556,6 +558,7 @@
       },
       {"outbound": "SumUp", "domain_suffix": ["sumup.com", "sumup.io", "sumup.net"]},
       {"outbound": "CurvePay", "domain_suffix": ["curve.app", "curve.com", "curve.api.kustomerapp.com", "imaginecurve.com"]},
+      {"outbound": "Klarna", "domain_suffix": ["klarna.com", "klarnacdn.net", "klarnaevt.com"]},
       {
         "outbound": "AI",
         "domain": "gspe1-ssl.ls.apple.com",
@@ -615,7 +618,6 @@
           "lemfi.com", "lemonade.finance", "lemonadefi.app.link",
           "taptapsend.com",
           "westernunion.com",
-          "klarna.com", "klarnacdn.net", "klarnaevt.com",
           "truelayer.com",
           "yapily.com",
           "zimperium.com"
