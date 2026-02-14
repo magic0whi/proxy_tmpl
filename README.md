@@ -10,13 +10,13 @@ Update sing-box's config
 
 ```bash
 pushd ~/sync_work/proxy_tmpl \
-  && export TMP=$(mktemp --directory) \
-  && gpg --quiet --batch --yes --output $TMP/tmp.key --decrypt proxy_kdbx.key.asc \
-  && sed -r "s,REPLACE,$TMP/tmp.key," chezmoi.toml > $TMP/chezmoi.toml \
-  && chezmoi -c $TMP/chezmoi.toml execute-template < providers.json.tmpl > ~/sync_work/sing-box-subscribe/providers.json \
-  && chezmoi -c $TMP/chezmoi.toml execute-template < sb_client.json.tmpl > ~/sync_work/sing-box-subscribe/config_template/1sb_client.json \
-  && chezmoi -c $TMP/chezmoi.toml execute-template < clash.yaml.tmpl > ~/sync_work/clash/clash.yaml \
-  && rm -r $TMP && unset TMP \
+  && export PROXY_TMP=$(mktemp --directory) \
+  && gpg --quiet --batch --yes --output $PROXY_TMP/tmp.key --decrypt proxy_kdbx.key.asc \
+  && sed -r "s,REPLACE,$PROXY_TMP/tmp.key," chezmoi.toml > $PROXY_TMP/chezmoi.toml \
+  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < providers.json.tmpl > ~/sync_work/sing-box-subscribe/providers.json \
+  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < sb_client.json.tmpl > ~/sync_work/sing-box-subscribe/config_template/1sb_client.json \
+  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < clash.yaml.tmpl > ~/sync_work/clash/clash.yaml \
+  && rm -r $PROXY_TMP && unset PROXY_TMP \
 && popd \
 && pushd ~/sync_work/sing-box-subscribe \
   && python main.py --template_index 0 \
@@ -63,13 +63,13 @@ Update sing-box's config
 
 ```bash
 pushd /srv/sync_work/proxy_tmpl \
-  && export TMP=$(mktemp --directory) \
-  && gpg --quiet --batch --yes --output $TMP/tmp.key --decrypt proxy_kdbx.key.asc \
-  && sed -r "s,REPLACE,$TMP/tmp.key," chezmoi.toml > $TMP/chezmoi.toml \
-  && chezmoi -c $TMP/chezmoi.toml execute-template < providers.json.tmpl > /srv/sync_work/sing-box-subscribe/providers.json \
-  && chezmoi -c $TMP/chezmoi.toml execute-template < sb_client.json.tmpl > /srv/sync_work/sing-box-subscribe/config_template/1sb_client.json \
-  && chezmoi -c $TMP/chezmoi.toml execute-template < clash.yaml.tmpl > /srv/sync_work/clash/clash.yaml \
-  && rm -r $TMP && unset TMP \
+  && export PROXY_TMP=$(mktemp --directory) \
+  && gpg --quiet --batch --yes --output $PROXY_TMP/tmp.key --decrypt proxy_kdbx.key.asc \
+  && sed -r "s,REPLACE,$PROXY_TMP/tmp.key," chezmoi.toml > $PROXY_TMP/chezmoi.toml \
+  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < providers.json.tmpl > /srv/sync_work/sing-box-subscribe/providers.json \
+  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < sb_client.json.tmpl > /srv/sync_work/sing-box-subscribe/config_template/1sb_client.json \
+  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < clash.yaml.tmpl > /srv/sync_work/clash/clash.yaml \
+  && rm -r $PROXY_TMP && unset PROXY_TMP \
 && popd \
 && pushd /srv/sync_work/sing-box-subscribe \
   && python main.py --template_index 0 \
@@ -111,21 +111,21 @@ Run `deploy` on a Linux shell since it doesn't build non-darwin binaries on MacO
 
 ```bash
 pushd /srv/sync_work/proxy_tmpl \
-  && export TMP=$(mktemp --directory) \
-  && gpg --quiet --batch --yes --output $TMP/tmp.key --decrypt proxy_kdbx.key.asc \
-  && sed -r "s,REPLACE,$TMP/tmp.key," chezmoi.toml > $TMP/chezmoi.toml \
-  && chezmoi -c $TMP/chezmoi.toml execute-template < sb_Proteus-NixOS-1.json.tmpl > $TMP/sb_Proteus-NixOS-1.json \
+  && export PROXY_TMP=$(mktemp --directory) \
+  && gpg --quiet --batch --yes --output $PROXY_TMP/tmp.key --decrypt proxy_kdbx.key.asc \
+  && sed -r "s,REPLACE,$PROXY_TMP/tmp.key," chezmoi.toml > $PROXY_TMP/chezmoi.toml \
+  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < sb_Proteus-NixOS-1.json.tmpl > $PROXY_TMP/sb_Proteus-NixOS-1.json \
 && popd \
 && pushd ~/nixos_configs_flake/secrets \
   && (rm sb_Proteus-NixOS-1.json.age || true) \
-  && cat $TMP/sb_Proteus-NixOS-1.json \
+  && cat $PROXY_TMP/sb_Proteus-NixOS-1.json \
     | agenix -e sb_Proteus-NixOS-1.json.age -i <(pgp2ssh \
       <<< <(gpg -ao - --export-secret-subkeys 30973F79B17F9ED3\!) \
       <<< 1 2>&1 | awk 'BEGIN { A=0; S=0; } \
         /BEGIN OPENSSH PRIVATE KEY/ { A=1; } \
         { if (A==1) { print; } }' \
     ) \
-  && rm -r $TMP && unset TMP \
+  && rm -r $PROXY_TMP && unset PROXY_TMP \
   && deploy -s --targets \
     /home/proteus/nixos_configs_flake#Proteus-NUC \
     /home/proteus/nixos_configs_flake#Proteus-Desktop \
