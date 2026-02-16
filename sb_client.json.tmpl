@@ -61,7 +61,7 @@
         "domain_suffix": ["2miners.com", "donate.v2.xmrig", "supportxmr.com"]
       },
       {"action": "reject", "process_name": ["xmrig", "xmrig.exe"]},
-      {"server": "vowifi", "domain_suffix": ["3gppnetwork.org", "jibecloud.net", "ee.co.uk"]},
+      {"server": "vowifi", "domain_suffix": ["3gppnetwork.org", "jibecloud.net", "ee.co.uk", "hkcsl.com"]},
       {"server": "paypal", "domain_suffix": "marqeta.com", "rule_set": "geosite-paypal"},
       {"server": "hsbc", "domain_suffix": "checkfreeweb.com", "rule_set": "geosite-hsbc"},
       {"server": "kraken", "rule_set": "geosite-kraken"},
@@ -204,14 +204,13 @@
       "udp_over_tcp": false,
       "detour": "Auto"
     },
+{{- range $i := untilStep 1 6 1 }}
     {
-      "tag": "Proteus-NixOS-1",
-      "type": "vless",
-      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-1" }}",
+      "tag": "Proteus-NixOS-{{ $i }}",
+      "type": "trojan",
+      "server": "{{ keepassxcAttribute "sing-box" (printf "Proteus-NixOS-%d" (int $i)) }}",
       "server_port": 443,
-      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
-      "flow": "xtls-rprx-vision",
-      "packet_encoding": "xudp",
+      "password": "{{ keepassxcAttribute "sing-box" "trojan_password" }}",
       "tls": {
         "enabled": true,
         "reality": {
@@ -230,110 +229,7 @@
         "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
       }
     },
-    {
-      "tag": "Proteus-NixOS-2",
-      "type": "vless",
-      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-2" }}",
-      "server_port": 443,
-      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
-      "flow": "xtls-rprx-vision",
-      "packet_encoding": "xudp",
-      "tls": {
-        "enabled": true,
-        "reality": {
-          "enabled": true,
-          "public_key": "{{ keepassxcAttribute "sing-box" "reality_public_key" }}",
-          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
-        },
-        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
-        "utls": {"enabled": true, "fingerprint": "chrome"}
-      },
-      "multiplex": {
-        "enabled": false,
-        "padding": true,
-        "protocol": "h2mux",
-        "max_streams": 32,
-        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
-      }
-    },
-    {
-      "tag": "Proteus-NixOS-3",
-      "type": "vless",
-      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-3" }}",
-      "server_port": 443,
-      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
-      "flow": "xtls-rprx-vision",
-      "packet_encoding": "xudp",
-      "tls": {
-        "enabled": true,
-        "reality": {
-          "enabled": true,
-          "public_key": "{{ keepassxcAttribute "sing-box" "reality_public_key" }}",
-          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
-        },
-        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
-        "utls": {"enabled": true, "fingerprint": "chrome"}
-      },
-      "multiplex": {
-        "enabled": false,
-        "padding": true,
-        "protocol": "h2mux",
-        "max_streams": 32,
-        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
-      }
-    },
-    {
-      "tag": "Proteus-NixOS-4",
-      "type": "vless",
-      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-4" }}",
-      "server_port": 443,
-      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
-      "flow": "xtls-rprx-vision",
-      "packet_encoding": "xudp",
-      "tls": {
-        "enabled": true,
-        "reality": {
-          "enabled": true,
-          "public_key": "{{ keepassxcAttribute "sing-box" "reality_public_key" }}",
-          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
-        },
-        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
-        "utls": {"enabled": true, "fingerprint": "chrome"}
-      },
-      "multiplex": {
-        "enabled": false,
-        "padding": true,
-        "protocol": "h2mux",
-        "max_streams": 32,
-        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
-      }
-    },
-    {
-      "tag": "Proteus-NixOS-5",
-      "type": "vless",
-      "server": "{{ keepassxcAttribute "sing-box" "Proteus-NixOS-5" }}",
-      "server_port": 443,
-      "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}",
-      "flow": "xtls-rprx-vision",
-      "packet_encoding": "xudp",
-      "tls": {
-        "enabled": true,
-        "reality": {
-          "enabled": true,
-          "public_key": "{{ keepassxcAttribute "sing-box" "reality_public_key" }}",
-          "short_id": "{{ keepassxcAttribute "sing-box" "reality_short_id" }}"
-        },
-        "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
-        "utls": {"enabled": true, "fingerprint": "chrome"}
-      },
-      "multiplex": {
-        "enabled": false,
-        "padding": true,
-        "protocol": "h2mux",
-        "max_streams": 32,
-        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
-      }
-    },
+{{- end }}
     {
       "tag": "Proteus-NixOS-6",
       "type": "shadowsocks",
@@ -377,7 +273,7 @@
     {
       "tag": "AI",
       "type": "selector",
-      "outbounds": ["Default", "Germany", "UnitedKingdom", "UnitedStates"],
+      "outbounds": ["Default", "Germany", "HongKong", "UnitedKingdom", "UnitedStates"],
       "default": "UnitedStates"
     },
     {
@@ -539,7 +435,7 @@
         "rules": [
           {"port": [500, 4500], "network": "udp"},
           {"port": 143, "network": "tcp"},
-          {"domain_suffix": ["3gppnetwork.org", "jibecloud.net", "ee.co.uk"]}
+          {"domain_suffix": ["3gppnetwork.org", "jibecloud.net", "ee.co.uk", "hkcsl.com"]}
         ]
       },
       {

@@ -4,11 +4,8 @@
   "inbounds": [
     {
       "type": "vless",
-      "listen": "::",
-      "listen_port": 443,
-      "users": [
-        {"name": "proteus", "uuid": "{{ keepassxcAttribute "sing-box" "vless_uuid" }}", "flow": "xtls-rprx-vision"}
-      ],
+      "listen": "::", "listen_port": 443,
+      "users": [{"name": "proteus", "password": "{{ keepassxcAttribute "sing-box" "trojan_password" }}"}],
       "tls": {
         "enabled": true,
         "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
@@ -23,18 +20,13 @@
     }
   ],
   "outbounds": [{"tag": "Direct", "type": "direct"}],
-  "route": {
-    "rules": [
-      {
-        "action": "hijack-dns",
-        "type": "logical",
-        "mode": "or",
-        "rules": [
-          {"port": 53},
-          {"protocol": "dns"}
-        ]
-      },
-      {"action": "reject", "ip_cidr": ["::/0"]}
-    ]
-  }
+  "route": {"rules": [
+    {
+      "action": "hijack-dns",
+      "type": "logical",
+      "mode": "or",
+      "rules": [{"port": 53}, {"protocol": "dns"}]
+    },
+    {"action": "reject", "ip_cidr": ["::/0"]}
+  ]}
 }
