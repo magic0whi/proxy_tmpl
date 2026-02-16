@@ -127,8 +127,6 @@ pushd /srv/sync_work/proxy_tmpl \
     ) \
   && rm -r $PROXY_TMP && unset PROXY_TMP \
   && deploy -s --targets \
-    /home/proteus/nixos_configs_flake#Proteus-NUC \
-    /home/proteus/nixos_configs_flake#Proteus-Desktop \
     /home/proteus/nixos_configs_flake#Proteus-NixOS-{1..6} \
   -- --show-trace --verbose \
 && popd

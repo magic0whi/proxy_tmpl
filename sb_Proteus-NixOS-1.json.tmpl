@@ -3,7 +3,7 @@
   "dns": {"servers": [{"tag": "proxy", "type": "tls", "server": "8.8.8.8"}]},
   "inbounds": [
     {
-      "type": "vless",
+      "type": "trojan",
       "listen": "::", "listen_port": 443,
       "users": [{"name": "proteus", "password": "{{ keepassxcAttribute "sing-box" "trojan_password" }}"}],
       "tls": {
