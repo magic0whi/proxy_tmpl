@@ -20,6 +20,7 @@
           "aria.proteus.eu.org": ["100.89.228.70", "fd7a:115c:a1e0::2c01:e446"]
         }
       },
+      {"tag": "ts", "type": "tailscale", "endpoint": "ts-ep", "accept_default_resolvers": false},
       {
         "tag": "fakeip",
         "type": "fakeip",
@@ -53,6 +54,7 @@
     ],
     "rules": [
       {"server": "hosts", "domain_suffix": "proteus.eu.org"},
+      {"server": "ts", "ip_accept_any": true},
       {"server": "fakeip", "strategy": "ipv4_only", "query_type": ["A", "AAAA"]},
       {"server": "china", "clash_mode": "direct"},
       {"server": "default", "clash_mode": "global"},
@@ -170,6 +172,9 @@
     ],
     "final": "proxy"
   },
+  "endpoints": [
+    {"tag": "ts-ep", "type": "tailscale", "auth_key": "{{ keepassxcAttribute "sing-box" "tailscale_auth_key" }}"}
+  ],
   "inbounds": [
     {
       "tag": "tun-in",
@@ -182,8 +187,6 @@
       "strict_route": true,
       "platform": {"http_proxy": {"enabled": false, "server": "127.0.0.1", "server_port": 2080}},
       "route_exclude_address": [
-        "100.64.0.0/10",
-        "fd7a:115c:a1e0::/48",
         "10.0.0.0/8",
         "169.254.0.0/16",
         "fe80::/10"
@@ -265,7 +268,7 @@
     },
     {"tag": "HSBC", "type": "selector", "outbounds": ["Direct", "HongKong"]},
     {"tag": "Kraken", "type": "selector", "outbounds": ["Germany", "UnitedKingdom"], "default": "UnitedKingdom"},
-    {"tag": "OKX", "type": "selector", "outbounds": ["Direct", "Germany"]},
+    {"tag": "OKX", "type": "selector", "outbounds": ["Direct", "Germany", "UnitedKingdom"]},
     {"tag": "Trading212", "type": "selector", "outbounds": ["Germany", "UnitedKingdom"], "default": "UnitedKingdom"},
     {"tag": "SumUp", "type": "selector", "outbounds": ["Germany", "UnitedKingdom"], "default": "UnitedKingdom"},
     {"tag": "CurvePay", "type": "selector", "outbounds": ["Germany", "UnitedKingdom"], "default": "UnitedKingdom"},
@@ -381,6 +384,7 @@
     "default_domain_resolver": "china",
     "final": "Default",
     "rules": [
+      {"outbound": "ts-ep", "ip_cidr": [ "100.64.0.0/10", "fd7a:115c:a1e0::/48"]},
       {
         "outbound": "Direct",
         "process_name": [
