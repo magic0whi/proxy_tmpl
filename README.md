@@ -1,39 +1,63 @@
 ## Common
 
 ```bash
-nix develop ~/sync_work/dev_flake#python
+nix develop github:magic0whi/dev_flake#python -c zsh
 ```
 
-## MacOS
+## Update sing-box's config
 
-Update sing-box's config
+MacOS env:
+```bash
+export REPO_HOME=~/sync_work/proxy_tmpl
+export SUB_HOME=~/sync_work/sing-box-subscribe
+```
+
+NixOS env:
+```bash
+export REPO_HOME=/srv/sync_work/proxy_tmpl
+export SUB_HOME=/srv/sync_work/sing-box-subscribe
+```
 
 ```bash
-pushd ~/sync_work/proxy_tmpl \
+pushd $REPO_HOME && unset REPO_HOME \
   && export PROXY_TMP=$(mktemp --directory) \
   && gpg --quiet --batch --yes --output $PROXY_TMP/tmp.key --decrypt proxy_kdbx.key.asc \
   && sed -r "s,REPLACE,$PROXY_TMP/tmp.key," chezmoi.toml > $PROXY_TMP/chezmoi.toml \
-  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < providers.json.tmpl > ~/sync_work/sing-box-subscribe/providers.json \
-  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < sb_client.json.tmpl > ~/sync_work/sing-box-subscribe/config_template/1sb_client.json \
-  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < clash.yaml.tmpl > ~/sync_work/clash/clash.yaml \
+  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < providers.json.tmpl > $SUB_HOME/providers.json \
+  && chezmoi --override-data '{"isMobile": true}' -c $PROXY_TMP/chezmoi.toml execute-template < sb_client.json.tmpl > $SUB_HOME/config_template/0mobile.json \
+  && chezmoi --override-data '{"isDarwin": true}' -c $PROXY_TMP/chezmoi.toml execute-template < sb_client.json.tmpl > $SUB_HOME/config_template/1darwin.json \
+  && chezmoi --override-data '{"isLinux": true}' -c $PROXY_TMP/chezmoi.toml execute-template < sb_client.json.tmpl > $SUB_HOME/config_template/2linux.json \
+  && chezmoi --override-data '{"isLinux": true, "isMobile": true}' -c $PROXY_TMP/chezmoi.toml execute-template < sb_client.json.tmpl > $SUB_HOME/config_template/2rooted.json \
+  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < clash.yaml.tmpl > $SUB_HOME/clash.yaml \
   && rm -r $PROXY_TMP && unset PROXY_TMP \
 && popd \
-&& pushd ~/sync_work/sing-box-subscribe \
-  && python main.py --template_index 0 \
-  && sudo cp config.json /run/agenix/sb_client.json \
-&& popd \
-&& sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder \
-&& sudo launchctl stop io.nekohasekai.sing-box && sleep 2 \
-&& sudo launchctl start io.nekohasekai.sing-box
+&& pushd $SUB_HOME && unset SUB_HOME \
+  && python main.py --template_index 0 && mv config.json mobile.json \
+  && python main.py --template_index 1 && mv config.json darwin.json \
+  && python main.py --template_index 2 && mv config.json linux.json \
+  && python main.py --template_index 3 && mv config.json rooted.json \
+&& popd
 ```
 
-Update nix-darwin's config
+## Rebuild System Configuration
+
+MacOS env:
+```bash
+export SUB_HOME=~/sync_work/sing-box-subscribe
+export NIXOS_CONFIGS_SECRETS=~/nixos_configs_flake/secrets
+```
+
+NixOS env:
+```bash
+export SUB_HOME=/srv/sync_work/sing-box-subscribe
+export NIXOS_CONFIGS_SECRETS=~/nixos_configs_flake/secrets
+```
 
 ```bash
-pushd ~/nixos_configs_flake/secrets \
-  && (rm sb_client.json.age || true) \
-  && cat ~/sync_work/sing-box-subscribe/config.json \
-    | agenix -e sb_client.json.age -i <(pgp2ssh \
+pushd $NIXOS_CONFIGS_SECRETS && unset NIXOS_CONFIGS_SECRETS \
+  && (rm sb_client_darwin.json.age || true) \
+  && cat $SUB_HOME/darwin.json \
+    | agenix -e sb_client_darwin.json.age -i <(pgp2ssh \
         <<< <(gpg -ao - --export-secret-subkeys 30973F79B17F9ED3\!) \
         <<< 1 2>&1 \
       | awk 'BEGIN { A=0; S=0; } \
@@ -41,8 +65,7 @@ pushd ~/nixos_configs_flake/secrets \
         { if (A==1) { print; } }' \
     ) \
   && (rm sb_client_linux.json.age || true) \
-  && cat ~/sync_work/sing-box-subscribe/config.json \
-    | sed -r 's/("auto_redirect":\ )false(,?)/\1true\2/' \
+  && cat $SUB_HOME/linux.json \
     | agenix -e sb_client_linux.json.age -i <(pgp2ssh \
         <<< <(gpg -ao - --export-secret-subkeys 30973F79B17F9ED3\!) \
         <<< 1 2>&1 \
@@ -50,67 +73,31 @@ pushd ~/nixos_configs_flake/secrets \
         /BEGIN OPENSSH PRIVATE KEY/ { A=1; } \
         { if (A==1) { print; } }' \
     ) \
-  && just proteus-mbp \
-&& popd \
-&& sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder \
-&& sudo launchctl stop io.nekohasekai.sing-box && sleep 2 \
-&& sudo launchctl start io.nekohasekai.sing-box
-```
-
-## NixOS
-
-Update sing-box's config
-
-```bash
-pushd /srv/sync_work/proxy_tmpl \
-  && export PROXY_TMP=$(mktemp --directory) \
-  && gpg --quiet --batch --yes --output $PROXY_TMP/tmp.key --decrypt proxy_kdbx.key.asc \
-  && sed -r "s,REPLACE,$PROXY_TMP/tmp.key," chezmoi.toml > $PROXY_TMP/chezmoi.toml \
-  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < providers.json.tmpl > /srv/sync_work/sing-box-subscribe/providers.json \
-  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < sb_client.json.tmpl > /srv/sync_work/sing-box-subscribe/config_template/1sb_client.json \
-  && chezmoi -c $PROXY_TMP/chezmoi.toml execute-template < clash.yaml.tmpl > /srv/sync_work/clash/clash.yaml \
-  && rm -r $PROXY_TMP && unset PROXY_TMP \
-&& popd \
-&& pushd /srv/sync_work/sing-box-subscribe \
-  && python main.py --template_index 0 \
-  && sudo cp config.json /run/agenix/sb_client.json \
-&& popd \
-&& sudo systemctl restart sing-box.service
-```
-
-Update NixOS config
-
-```bash
-pushd ~/nixos_configs_flake/secrets \
-  && (rm sb_client.json.age || true) \
-  && cat /srv/sync_work/sing-box-subscribe/config.json \
-    | agenix -e sb_client.json.age -i <(pgp2ssh \
-      <<< <(gpg -ao - --export-secret-subkeys 30973F79B17F9ED3\!) \
-      <<< 1 2>&1 | awk 'BEGIN { A=0; S=0; } \
-        /BEGIN OPENSSH PRIVATE KEY/ { A=1; } \
-        { if (A==1) { print; } }' \
-    ) \
-  && (rm sb_client_linux.json.age || true) \
-  && cat /srv/sync_work/sing-box-subscribe/config.json \
-    | sed -r 's/("auto_redirect":\ )false(,?)/\1true\2/' \
-    | agenix -e sb_client_linux.json.age -i <(pgp2ssh \
-        <<< <(gpg -ao - --export-secret-subkeys 30973F79B17F9ED3\!) \
-        <<< 1 2>&1 \
-      | awk 'BEGIN { A=0; S=0; } \
-        /BEGIN OPENSSH PRIVATE KEY/ { A=1; } \
-        { if (A==1) { print; } }' \
-    ) \
-  && just proteus-nuc \
-&& popd \
-&& sudo systemctl restart sing-box.service
+  && unset SUB_HOME \
+  && if [ "$(uname)" = "Darwin" ]; then \
+    just proteus-mbp \
+    && sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder \
+    && sudo launchctl stop io.nekohasekai.sing-box && sleep 2 \
+    && sudo launchctl start io.nekohasekai.sing-box; \
+  else \
+    just proteus-nuc \
+    && sudo systemctl restart sing-box.service; \
+  fi \
+&& popd
 ```
 
 ## NixOS Server
 
 Run `deploy` on a Linux shell since it doesn't build non-darwin binaries on MacOS
 
+NixOS env:
 ```bash
-pushd /srv/sync_work/proxy_tmpl \
+export REPO_HOME=/srv/sync_work/proxy_tmpl
+export NIXOS_CONFIGS_HOME=~/nixos_configs_flake
+```
+
+```bash
+pushd $REPO_HOME && unset REPO_HOME \
   && export PROXY_TMP=$(mktemp --directory) \
   && gpg --quiet --batch --yes --output $PROXY_TMP/tmp.key --decrypt proxy_kdbx.key.asc \
   && sed -r "s,REPLACE,$PROXY_TMP/tmp.key," chezmoi.toml > $PROXY_TMP/chezmoi.toml \
@@ -127,8 +114,9 @@ pushd /srv/sync_work/proxy_tmpl \
     ) \
   && rm -r $PROXY_TMP && unset PROXY_TMP \
   && deploy -s --targets \
-    /home/proteus/nixos_configs_flake#Proteus-NixOS-{1..6} \
+    $NIXOS_CONFIGS_HOME#Proteus-NixOS-{1..6} \
   -- --show-trace --verbose \
+  && unset NIXOS_CONFIGS_HOME \
 && popd
 ```
 

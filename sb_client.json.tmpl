@@ -20,7 +20,9 @@
           "aria.proteus.eu.org": ["100.89.228.70", "fd7a:115c:a1e0::2c01:e446"]
         }
       },
-      {"tag": "ts", "type": "tailscale", "endpoint": "ts-ep", "accept_default_resolvers": false},
+{{- if .isMobile }}
+      {"tag": "ts", "type": "tailscale", "endpoint": "Tailscale", "accept_default_resolvers": false},
+{{- end }}
       {
         "tag": "fakeip",
         "type": "fakeip",
@@ -172,21 +174,28 @@
     ],
     "final": "proxy"
   },
-  "endpoints": [
-    {"tag": "ts-ep", "type": "tailscale", "auth_key": "{{ keepassxcAttribute "sing-box" "tailscale_auth_key" }}"}
-  ],
+{{- if .isMobile }}
+  "endpoints": [{"tag": "Tailscale", "type": "tailscale", "auth_key": "{{ keepassxcAttribute "sing-box" "tailscale_auth_key" }}"}],
+{{- end }}
   "inbounds": [
     {
       "tag": "tun-in",
       "type": "tun",
-      "interface_name": "utun114",
+{{- if (not .isDarwin) }}
+      "interface_name": "sing0",
+{{- end }}
       "address": ["172.19.0.0/30", "fdfe:dcba:9876::0/126"],
       "stack": "gvisor",
       "auto_route": true,
-      "auto_redirect": false,
+{{- if .isLinux }}
+      "auto_redirect": true,
+{{- end }}
       "strict_route": true,
       "platform": {"http_proxy": {"enabled": false, "server": "127.0.0.1", "server_port": 2080}},
       "route_exclude_address": [
+{{- if (not .isMobile) }}
+        "100.64.0.0/10", "fd7a:115c:a1e0::/48",
+{{- end }}
         "10.0.0.0/8",
         "169.254.0.0/16",
         "fe80::/10"
@@ -249,12 +258,9 @@
         "Auto",
         "Direct",
         "Socks5",
-        "Proteus-NixOS-1",
-        "Proteus-NixOS-2",
-        "Proteus-NixOS-3",
-        "Proteus-NixOS-4",
-        "Proteus-NixOS-5",
-        "Proteus-NixOS-6",
+{{- range $i := untilStep 1 7 1 }}
+        "Proteus-NixOS-{{ $i }}",
+{{- end }}
         "{all}"
       ],
       "default": "Auto"
@@ -365,12 +371,9 @@
       "tag": "Auto",
       "type": "urltest",
       "outbounds": [
-        "Proteus-NixOS-1",
-        "Proteus-NixOS-2",
-        "Proteus-NixOS-3",
-        "Proteus-NixOS-4",
-        "Proteus-NixOS-5",
-        "Proteus-NixOS-6",
+{{- range $i := untilStep 1 7 1 }}
+        "Proteus-NixOS-{{ $i }}",
+{{- end }}
         "{all}"
       ],
       "filter": [{"action": "exclude", "keywords": ["网站|地址|剩余|过期|时间|有效|过滤"]}],
@@ -384,7 +387,9 @@
     "default_domain_resolver": "china",
     "final": "Default",
     "rules": [
-      {"outbound": "ts-ep", "ip_cidr": [ "100.64.0.0/10", "fd7a:115c:a1e0::/48"]},
+{{- if .isMobile }}
+      {"outbound": "Tailscale", "ip_cidr": ["100.64.0.0/10", "fd7a:115c:a1e0::/48"]},
+{{- end }}
       {
         "outbound": "Direct",
         "process_name": [
@@ -404,10 +409,12 @@
       {"action": "reject", "clash_mode": "rule", "rule_set": "geosite-category-ads-all"},
       {"outbound": "Default", "clash_mode": "global"},
       {"outbound": "Direct", "clash_mode": "direct"},
+{{- range $i, $key := list "ip_cidr" "source_ip_cidr" }}
       {
         "outbound": "Direct",
-        "ip_cidr": [
+        "{{ $key }}": [
           "10.0.0.0/8",
+          "127.0.0.0/8",
           "169.254.0.0/16",
           "172.16.0.0/15",
           "172.18.0.0/16",
@@ -431,6 +438,7 @@
           "fe80::/10"
         ]
       },
+{{- end }}
       {"outbound": "Default", "domain_suffix": "wenziwanka.com"},
       {
         "outbound": "VoWiFi",

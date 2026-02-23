@@ -1,3 +1,7 @@
+[data]
+isMobile = false
+isLinux = false
+isDarwin = false
 [keepassxc]
 database = "./proxy.kdbx"
 args = ["--no-password", "--key-file=REPLACE"]
