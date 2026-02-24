@@ -1,4 +1,7 @@
 {
+{{- if (and .isMobile .isLinux) }}
+  "certificate": {"certificate": ["-----BEGIN CERTIFICATE-----\nMIIC3zCCAmSgAwIBAgIUFgGncqhDCuR7p0KOt0ywHRbctMYwCgYIKoZIzj0EAwMw\ngaUxCzAJBgNVBAYTAkpQMRIwEAYDVQQIDAlUb3VreW91dG8xHDAaBgNVBAcME1Nl\ndGFnYXlha3UgS2l0YXphd2ExEzARBgNVBAoMCkhvbW8xMTQ1MTQxFTATBgNVBAsM\nDFlhanV1IFNhLWJhLTESMBAGA1UEAwwJSG9tbyBob21lMSQwIgYJKoZIhvcNAQkB\nFhVzdWRha3UyMzNAb3V0bG9vay5jb20wHhcNMjQwODAyMDY1MDI5WhcNMjYwODAy\nMDY1MDI5WjCBpTELMAkGA1UEBhMCSlAxEjAQBgNVBAgMCVRvdWt5b3V0bzEcMBoG\nA1UEBwwTU2V0YWdheWFrdSBLaXRhemF3YTETMBEGA1UECgwKSG9tbzExNDUxNDEV\nMBMGA1UECwwMWWFqdXUgU2EtYmEtMRIwEAYDVQQDDAlIb21vIGhvbWUxJDAiBgkq\nhkiG9w0BCQEWFXN1ZGFrdTIzM0BvdXRsb29rLmNvbTB2MBAGByqGSM49AgEGBSuB\nBAAiA2IABIW8GEkOL/d16jmwwL27XccJiz6kFYg24gLhBp/biTXJ2n3O0q78UAvo\nP3JKuzhRUOV5KklP4ArKiXaXcrhuviecocALPmoydvhBC0LiuIKxLiwzdNZC6KTe\nxzrcBvZDRaNTMFEwHQYDVR0OBBYEFOx1uAhVWTnDiOo0yLJI4hoN4r5lMB8GA1Ud\nIwQYMBaAFOx1uAhVWTnDiOo0yLJI4hoN4r5lMA8GA1UdEwEB/wQFMAMBAf8wCgYI\nKoZIzj0EAwMDaQAwZgIxANtUOrF1KHkEYWWq5fAvAXiamUAHbSSPIY2GwiepUNK5\nOO+oK6SBFNZueyweMKGs/QIxAO0VO+AUxvpcAtDG+urs/bvlRAFQV+s4q9pCaA8K\nZzuXjq+vrW/Cq0XmCxpO/UZHKw==\n-----END CERTIFICATE-----\n"]},
+{{- end }}
   "log": {"level": "debug", "timestamp": false},
   "experimental": {
     "clash_api": {
@@ -13,15 +16,21 @@
   },
   "dns": {
     "servers": [
+{{- if (or .isMobile .isDarwin) }}
       {
-        "tag": "hosts",
-        "type": "hosts",
-        "predefined": {
-          "aria.proteus.eu.org": ["100.89.228.70", "fd7a:115c:a1e0::2c01:e446"]
-        }
+        "tag": "ts-ns",
+        "type": "tls",
+        "server": "100.64.161.20",
+        "tls": {"server_name": "ns1.proteus.eu.org"},
+  {{- if .isMobile }}
+        "detour": "Tailscale"
+  {{- else }}
+        "detour": "Default"
+  {{- end }}
       },
+{{- end }}
 {{- if .isMobile }}
-      {"tag": "ts", "type": "tailscale", "endpoint": "Tailscale", "accept_default_resolvers": false},
+      {"tag": "ts", "type": "tailscale", "endpoint": "Tailscale"},
 {{- end }}
       {
         "tag": "fakeip",
@@ -55,8 +64,13 @@
       {"tag": "category-speedtest", "type": "tls", "server": "223.5.5.5", "detour": "Category-Speedtest"}
     ],
     "rules": [
-      {"server": "hosts", "domain_suffix": "proteus.eu.org"},
+{{- if (or .isMobile .isDarwin) }}
+      {"server": "ts-ns", "domain_suffix": "proteus.eu.org"},
+{{- end }}
+{{- if .isMobile }}
       {"server": "ts", "ip_accept_any": true},
+{{- end }}
+      {"server": "china", "rule_set": "geosite-tailscale"},
       {"server": "fakeip", "strategy": "ipv4_only", "query_type": ["A", "AAAA"]},
       {"server": "china", "clash_mode": "direct"},
       {"server": "default", "clash_mode": "global"},
@@ -161,7 +175,6 @@
         ],
         "rule_set": [
           "geosite-bilibili",
-          "geosite-tailscale",
           "geosite-boc",
           "geosite-ccb",
           "geosite-icbc",
@@ -409,10 +422,9 @@
       {"action": "reject", "clash_mode": "rule", "rule_set": "geosite-category-ads-all"},
       {"outbound": "Default", "clash_mode": "global"},
       {"outbound": "Direct", "clash_mode": "direct"},
-{{- range $i, $key := list "ip_cidr" "source_ip_cidr" }}
       {
         "outbound": "Direct",
-        "{{ $key }}": [
+        "ip_cidr": [
           "10.0.0.0/8",
           "127.0.0.0/8",
           "169.254.0.0/16",
@@ -438,7 +450,6 @@
           "fe80::/10"
         ]
       },
-{{- end }}
       {"outbound": "Default", "domain_suffix": "wenziwanka.com"},
       {
         "outbound": "VoWiFi",
