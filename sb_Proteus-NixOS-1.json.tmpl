@@ -20,13 +20,39 @@
     }
   ],
   "outbounds": [{"tag": "Direct", "type": "direct"}],
-  "route": {"rules": [
-    {
-      "action": "hijack-dns",
-      "type": "logical",
-      "mode": "or",
-      "rules": [{"port": 53}, {"protocol": "dns"}]
-    },
-    {"action": "reject", "ip_cidr": ["::/0"]}
-  ]}
+  "route": {
+    "rules": [
+      {
+        "action": "reject",
+        "method": "drop",
+        "invert": true,
+        "rule_set_ip_cidr_match_source": true,
+        "rule_set": [
+          "geoip-china-mobile-as56046",
+          "geoip-china-telecom-as4134"
+        ]
+      },
+      {
+        "action": "hijack-dns",
+        "type": "logical",
+        "mode": "or",
+        "rules": [{"port": 53}, {"protocol": "dns"}]
+      },
+      {"action": "reject", "ip_cidr": ["::/0"]}
+    ],
+    "rule_set": [
+      {
+        "tag": "geoip-china-mobile-as56046",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/asn/AS56046.srs"
+      },
+      {
+        "tag": "geoip-china-telecom-as4134",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/asn/AS4134.srs"
+      }
+    ]
+  }
 }
