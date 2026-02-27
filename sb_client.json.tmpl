@@ -197,7 +197,7 @@
 {{- if (not .isDarwin) }}
       "interface_name": "sing0",
 {{- end }}
-      "address": ["172.19.0.0/30", "fdfe:dcba:9876::0/126"],
+      "address": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"],
       "stack": "gvisor",
       "auto_route": true,
       "strict_route": true,
@@ -245,7 +245,7 @@
         "enabled": true,
         "padding": true,
         "protocol": "h2mux",
-        "max_streams": 32,
+        "max_streams": 8,
         "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
       }
     },
