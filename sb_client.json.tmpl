@@ -200,6 +200,9 @@
       "address": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"],
       "stack": "gvisor",
       "auto_route": true,
+{{- if .isLinux }}
+      "auto_redirect": true,
+{{- end }}
       "strict_route": true,
       "platform": {"http_proxy": {"enabled": false, "server": "127.0.0.1", "server_port": 2080}},
       "route_exclude_address": [
