@@ -171,7 +171,8 @@
           "asia.ccb.com",
           "welab.bank",
           "za.group",
-          "szgjgs.com"
+          "szgjgs.com",
+          "gov.hk"
         ],
         "rule_set": [
           "geosite-bilibili",
@@ -230,7 +231,7 @@
 {{- range $i := untilStep 1 6 1 }}
     {
       "tag": "Proteus-NixOS-{{ $i }}",
-      "type": "trojan",
+      "type": "anytls",
       "server": "{{ keepassxcAttribute "sing-box" (printf "Proteus-NixOS-%d" (int $i)) }}",
       "server_port": 443,
       "password": "{{ keepassxcAttribute "sing-box" "trojan_password" }}",
@@ -243,13 +244,6 @@
         },
         "server_name": "{{ keepassxcAttribute "sing-box" "reality_server_name" }}",
         "utls": {"enabled": true, "fingerprint": "chrome"}
-      },
-      "multiplex": {
-        "enabled": true,
-        "padding": true,
-        "protocol": "h2mux",
-        "max_streams": 8,
-        "brutal": {"enabled": false, "down_mbps": 100, "up_mbps": 1000}
       }
     },
 {{- end }}
@@ -560,7 +554,8 @@
           "asia.ccb.com",
           "welab.bank",
           "za.group",
-          "szgjgs.com"
+          "szgjgs.com",
+          "gov.hk"
         ],
         "rule_set": [
           "geosite-tailscale",
