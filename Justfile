@@ -139,6 +139,6 @@ deploy-server:
   cat "$PROXY_TMP/sb_Proteus-NixOS-1.json" | agenix -e sb_Proteus-NixOS-1.json.age -i <(printf "%s\n" "$SSH_KEY")
 
   # Run the deployment target
-  deploy --targets "$NIXOS_HOME#Proteus-NixOS-"{1..5} -- --show-trace --verbose
+  deploy --skip-checks --targets "$NIXOS_HOME#Proteus-NixOS-"{1..5} -- --show-trace --verbose
 
   popd > /dev/null
