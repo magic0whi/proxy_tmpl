@@ -412,7 +412,6 @@
       {"outbound": "Direct", "port": 22},
       {"action": "sniff", "inbound": ["tun-in", "mixed-in"]},
       {"action": "hijack-dns", "type": "logical", "mode": "or", "rules": [{"port": 53}, {"protocol": "dns"}]},
-      {"action": "reject", "clash_mode": "rule", "rule_set": "geosite-category-ads-all"},
       {"outbound": "Default", "clash_mode": "global"},
       {"outbound": "Direct", "clash_mode": "direct"},
       {
@@ -573,13 +572,6 @@
       }
     ],
     "rule_set": [
-      {
-        "tag": "geosite-category-ads-all",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ads-all.srs",
-        "download_detour": "Auto"
-      },
       {
         "tag": "geosite-github",
         "type": "remote",
