@@ -229,7 +229,7 @@
       "udp_over_tcp": false,
       "detour": "Auto"
     },
-{{- range $i := untilStep 1 6 1 }}
+{{- range $i := untilStep 0 6 1 }}
     {
       "tag": "Proteus-NixOS-{{ $i }}",
       "type": "anytls",
@@ -264,7 +264,7 @@
         "Auto",
         "Direct",
         "Socks5",
-{{- range $i := untilStep 1 7 1 }}
+{{- range $i := untilStep 0 6 1 }}
         "Proteus-NixOS-{{ $i }}",
 {{- end }}
         "{all}"
@@ -345,7 +345,7 @@
     {
       "tag": "UnitedStates",
       "type": "selector",
-      "outbounds": ["Proteus-NixOS-1", "{all}"],
+      "outbounds": ["Proteus-NixOS-0", "Proteus-NixOS-1", "{all}"],
       "filter": [{"action": "include", "keywords": ["🇺🇸|US|us|美国|美|United States"]}]
     },
     {
