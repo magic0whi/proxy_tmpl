@@ -1,10 +1,9 @@
-home := env_var("HOME")
 os_name := os()
 
-repo_home := if os_name == "macos" { home + "/sync_work/proxy_tmpl" } else { "/srv/sync_work/proxy_tmpl" }
-sub_home := if os_name == "macos" { home + "/sync_work/sing-box-subscribe" } else { "/srv/sync_work/sing-box-subscribe" }
+repo_home := justfile_directory()
+sub_home := `zoxide query sing-box-subscribe || echo "~/sync_work/sing-box-subscribe"`
 
-nixos_configs_home := home + "/nixos_configs_flake"
+nixos_configs_home := `zoxide query nixos_configs_flake || echo "~/nixos_configs_flake"`
 nixos_configs_secrets := nixos_configs_home + "/secrets"
 pgp_key_id := "30973F79B17F9ED3!"
 
@@ -139,6 +138,6 @@ deploy-server:
   cat "$PROXY_TMP/sb_Proteus-NixOS-1.json" | agenix -e sb_Proteus-NixOS-1.json.age -i <(printf "%s\n" "$SSH_KEY")
 
   # Run the deployment target
-  deploy --skip-checks --targets "$NIXOS_HOME#Proteus-NixOS-"{1..5} -- --show-trace --verbose
+  deploy --skip-checks --targets "$NIXOS_HOME#Proteus-NixOS-"{0..5} -- --show-trace --verbose
 
   popd > /dev/null

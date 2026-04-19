@@ -1,6 +1,6 @@
 {
 {{- if (and .isMobile .isLinux) }}
-  "certificate": {"certificate": ["-----BEGIN CERTIFICATE-----\nMIIC3zCCAmSgAwIBAgIUFgGncqhDCuR7p0KOt0ywHRbctMYwCgYIKoZIzj0EAwMw\ngaUxCzAJBgNVBAYTAkpQMRIwEAYDVQQIDAlUb3VreW91dG8xHDAaBgNVBAcME1Nl\ndGFnYXlha3UgS2l0YXphd2ExEzARBgNVBAoMCkhvbW8xMTQ1MTQxFTATBgNVBAsM\nDFlhanV1IFNhLWJhLTESMBAGA1UEAwwJSG9tbyBob21lMSQwIgYJKoZIhvcNAQkB\nFhVzdWRha3UyMzNAb3V0bG9vay5jb20wHhcNMjQwODAyMDY1MDI5WhcNMjYwODAy\nMDY1MDI5WjCBpTELMAkGA1UEBhMCSlAxEjAQBgNVBAgMCVRvdWt5b3V0bzEcMBoG\nA1UEBwwTU2V0YWdheWFrdSBLaXRhemF3YTETMBEGA1UECgwKSG9tbzExNDUxNDEV\nMBMGA1UECwwMWWFqdXUgU2EtYmEtMRIwEAYDVQQDDAlIb21vIGhvbWUxJDAiBgkq\nhkiG9w0BCQEWFXN1ZGFrdTIzM0BvdXRsb29rLmNvbTB2MBAGByqGSM49AgEGBSuB\nBAAiA2IABIW8GEkOL/d16jmwwL27XccJiz6kFYg24gLhBp/biTXJ2n3O0q78UAvo\nP3JKuzhRUOV5KklP4ArKiXaXcrhuviecocALPmoydvhBC0LiuIKxLiwzdNZC6KTe\nxzrcBvZDRaNTMFEwHQYDVR0OBBYEFOx1uAhVWTnDiOo0yLJI4hoN4r5lMB8GA1Ud\nIwQYMBaAFOx1uAhVWTnDiOo0yLJI4hoN4r5lMA8GA1UdEwEB/wQFMAMBAf8wCgYI\nKoZIzj0EAwMDaQAwZgIxANtUOrF1KHkEYWWq5fAvAXiamUAHbSSPIY2GwiepUNK5\nOO+oK6SBFNZueyweMKGs/QIxAO0VO+AUxvpcAtDG+urs/bvlRAFQV+s4q9pCaA8K\nZzuXjq+vrW/Cq0XmCxpO/UZHKw==\n-----END CERTIFICATE-----\n"]},
+  "certificate": {"certificate": ["-----BEGIN CERTIFICATE-----\nMIIC3zCCAmSgAwIBAgIUFgGncqhDCuR7p0KOt0ywHRbctMYwCgYIKoZIzj0EAwMw\ngaUxCzAJBgNVBAYTAkpQMRIwEAYDVQQIDAlUb3VreW91dG8xHDAaBgNVBAcME1Nl\ndGFnYXlha3UgS2l0YXphd2ExEzARBgNVBAoMCkhvbW8xMTQ1MTQxFTATBgNVBAsM\nDFlhanV1IFNhLWJhLTESMBAGA1UEAwwJSG9tbyBob21lMSQwIgYJKoZIhvcNAQkB\nFhVzdWRha3UyMzNAb3V0bG9vay5jb20wHhcNMjQwODAyMDY1MDI5WhcNMjYwODAy\nMDY1MDI5WjCBpTELMAkGA1UEBhMCSlAxEjAQBgNVBAgMCVRvdWt5b3V0bzEcMBoG\nA1UEBwwTU2V0YWdheWFrdSBLaXRhemF3YTETMBEGA1UECgwKSG9tbzExNDUxNDEV\nMBMGA1UECwwMWWFqdXUgU2EtYmEtMRIwEAYDVQQDDAlIb21vIGhvbWUxJDAiBgkq\nhkiG9w0BCQEWFXN1ZGFrdTIzM0BvdXRsb29rLmNvbTB2MBAGByqGSM49AgEGBSuB\nBAAiA2IABIW8GEkOL/d16jmwwL27XccJiz6kFYg24gLhBp/biTXJ2n3O0q78UAvo\nP3JKuzhRUOV5KklP4ArKiXaXcrhuviecocALPmoydvhBC0LiuIKxLiwzdNZC6KTe\nxzrcBvZDRaNTMFEwHQYDVR0OBBYEFOx1uAhVWTnDiOo0yLJI4hoN4r5lMB8GA1Ud\nIwQYMBaAFOx1uAhVWTnDiOo0yLJI4hoN4r5lMA8GA1UdEwEB/wQFMAMBAf8wCgYI\nKoZIzj0EAwMDaQAwZgIxANtUOrF1KHkEYWWq5fAvAXiamUAHbSSPIY2GwiepUNK5\nOO+oK6SBFNZueyweMKGs/QIxAO0VO+AUxvpcAtDG+urs/bvlRAFQV+s4q9pCaA8K\nZzuXjq+vrW/Cq0XmCxpO/UZHKw==\n-----END CERTIFICATE-----"]},
 {{- end }}
   "log": {"level": "debug", "timestamp": false},
   "experimental": {
@@ -43,7 +43,7 @@
       {"tag": "hk", "type": "tls", "server": "8.8.8.8", "detour": "HongKong"},
       {"tag": "gb", "type": "tls", "server": "8.8.8.8", "detour": "UnitedKingdom"},
       {"tag": "us", "type": "tls", "server": "8.8.8.8", "detour": "UnitedStates"},
-      {"tag": "china", "type": "tls", "server": "223.5.5.5"},
+      {"tag": "china", "type": "quic", "server": "223.5.5.5"},
       {"tag": "vowifi", "type": "tls", "server": "8.8.8.8", "detour": "VoWiFi"},
       {"tag": "paypal", "type": "tls", "server": "8.8.8.8", "detour": "PayPal"},
       {"tag": "hsbc", "type": "tls", "server": "8.8.8.8", "detour": "HSBC"},
@@ -299,20 +299,20 @@
     {
       "tag": "Meta",
       "type": "selector",
-      "outbounds": ["Default", "Germany", "UnitedKingdom", "UnitedStates"],
+      "outbounds": ["Default", "Germany", "HongKong", "UnitedKingdom", "UnitedStates"],
       "default": "UnitedKingdom"
     },
     {
       "tag": "Games",
       "type": "selector",
-      "outbounds": ["Direct", "Default", "Germany", "UnitedKingdom", "UnitedStates", "Others"]
+      "outbounds": ["Direct", "Default", "Germany", "HongKong", "UnitedKingdom", "UnitedStates", "Others"]
     },
     {"tag": "Google", "type": "selector", "outbounds": ["Default", "Germany", "HongKong", "UnitedKingdom", "UnitedStates"]},
     {"tag": "Microsoft", "type": "selector", "outbounds": ["Direct", "Germany", "HongKong", "UnitedKingdom", "UnitedStates"]},
     {
       "tag": "Oracle",
       "type": "selector",
-      "outbounds": ["Direct", "Default", "Germany", "UnitedKingdom", "UnitedStates"],
+      "outbounds": ["Direct", "Default", "Germany", "HongKong", "UnitedKingdom", "UnitedStates"],
       "default": "UnitedKingdom"
     },
     {"tag": "BiliBili", "type": "selector", "outbounds": ["Direct", "Proteus-NixOS-6", "HongKong", "Taiwan"]},
